@@ -13,14 +13,15 @@ h1 {
     color: #FF5D55;
     display: block;
     font-family: 'Flamente', serif;
-    font-size: 10em;
+    font-size: 20vmin;
+    margin-top: 15vmin;
     margin-bottom: 0;
     text-align: center;
 }
 h2 {
     color: white;
     font-family: 'Allan',  cursive;
-    font-size: 3em;
+    font-size: 6vmin;
     margin-top: 0;
     text-align: center;
 }
@@ -48,7 +49,7 @@ a.btn {
     color:white;
     font-family: 'Abel', sans-serif;
     display: block;
-    font-size:2em;
+    font-size: 5vmin;
     padding: 12px 24px;
 }
 
@@ -63,7 +64,7 @@ a.icons {
 }
 .fa {
     color:#FF5D55;
-    font-size:10em;
+    font-size:20vmin;
 }
 .fa:focus, .fa:hover {
     color: #e5534c;
@@ -85,9 +86,10 @@ a.icons {
 p {
     color: white;
     font-family: 'Abel', sans-serif;
-    font-size:1.5em;
+    font-size:  1em;
     margin-top: 0;
 }
+
 
 @font-face {
     font-family: "Flamente";
