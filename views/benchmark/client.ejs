@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Client Under Test</title>
+    </head>
+    <body>
+        <h1><%= title %> Test Orchestration</h1>
+        <h2>(Client Under Test)</h2>
+        <div id="testbench" style="background: red;">
+            this is where tests happen
+        </div>
+        <div id="log"></div>
+        <script src='https://code.jquery.com/jquery-3.2.1.js'></script>
+        <script src='/socket.io/socket.io.js'></script>
+        <script src='/javascript/test/base.js'></script>
+        <script src='<%= rt %>'></script>
+        <script src='/javascript/input/client.js'></script>
+    </body>
+</html>

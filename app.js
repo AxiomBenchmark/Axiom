@@ -19,12 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')))
 
-var index = require('./routes/index');
-app.use('/', index);
-
 var http = require('http').Server(app);
-var input = require('./routes/input')(http);
-app.use('/input', input);
+var socMan = require(path.join(__dirname, 'socketManager.js'))(http);
+var bench = require('./routes/benchmark')(http);
+app.use('/benchmark', bench);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -41,7 +39,11 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {
+    'code': err.status,
+    'message' : "That's an error.",
+    'details' : err.message
+  });
 });
 
 http.listen(3000);

@@ -22,6 +22,7 @@ h2 {
     font-family: 'Allan',  cursive;
     font-size: 3em;
     margin-top: 0;
+    text-align: center;
 }
 .home {
     text-align: center;
@@ -90,5 +91,5 @@ p {
 
 @font-face {
     font-family: "Flamente";
-    src: "/stylesheets/Flamante-Serif-FFP.ttf" format("truetype");
+    src: url("Flamante-Serif-Bold-FFP.ttf") format("truetype");
 }
