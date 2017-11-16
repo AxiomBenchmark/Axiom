@@ -1,5 +1,5 @@
 var log = function(text) {
-    $('#log').prepend(text + '<br>');
+    $('#statusbar').prepend(text + '<br>');
 }
 
 var socket = io();

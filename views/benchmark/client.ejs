@@ -1,18 +1,34 @@
 <html>
     <head>
-        <title>Client Under Test</title>
+        <title><%= title %> Test</title>
+        <style>
+            body {
+                margin: 0px;
+            }
+            #testbench {
+                background: #364554;
+                height: 90%;
+                width: 100%;
+                display: inline-block;
+            }
+            #statusbar {
+                background: #FF5D55;
+                height: 10%;
+                width: 100%;
+                overflow: hidden;
+            }
+            span {
+                overflow-wrap: normal;
+            }
+        </style>
     </head>
     <body>
-        <h1><%= title %> Test Orchestration</h1>
-        <h2>(Client Under Test)</h2>
-        <div id="testbench" style="background: red;">
-            this is where tests happen
-        </div>
-        <div id="log"></div>
+        <div id="testbench"></div>
+        <div id="statusbar"></div>
         <script src='https://code.jquery.com/jquery-3.2.1.js'></script>
         <script src='/socket.io/socket.io.js'></script>
         <script src='/javascript/test/base.js'></script>
         <script src='<%= rt %>'></script>
-        <script src='/javascript/input/client.js'></script>
+        <script src='/javascript/client.js'></script>
     </body>
 </html>
