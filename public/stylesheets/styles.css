@@ -14,21 +14,16 @@ h1 {
     display: block;
     font-family: 'Flamente', serif;
     font-size: 20vmin;
-    margin-top: 15vmin;
     margin-bottom: 0;
     text-align: center;
 }
 h2 {
     color: white;
     font-family: 'Allan',  cursive;
-    font-size: 6vmin;
-    margin-top: 0;
+    font-size: 2em;
+    margin: 0;
     text-align: center;
 }
-.home {
-    text-align: center;
-}
-
 div.rect-btn {
     background-color: #ff5d55;
     border-width: 0;
@@ -41,48 +36,39 @@ div.rect-btn {
     text-align: center;
 }
 
-div.rect-btn:focus, .rect-btn:hover {
+.rect-btn:focus, .rect-btn:hover {
     background-color: #e5534c;
 }
 
 a.btn {
     color:white;
     font-family: 'Abel', sans-serif;
-    display: block;
-    font-size: 5vmin;
+    font-size: 1.5em;
+    margin: 0;
     padding: 12px 24px;
 }
 
-div.icons {
+a.icons {
     align-items: center;
     display: flex;
     justify-content: center;
-}
-a.icons {
-    display:inline-block;
     margin: auto;
 }
 .fa {
     color:#FF5D55;
-    font-size:20vmin;
+    font-size: 7em;
 }
 .fa:focus, .fa:hover {
     color: #e5534c;
 }
 
-.question-circle {
-    right:25%;
-}
-
-.fa-github {
-    left: 25%;
-}
 .about {
     display: block;
     margin: 0 auto;
     max-width: 1000px;
    
 }
+
 p {
     color: white;
     font-family: 'Abel', sans-serif;
