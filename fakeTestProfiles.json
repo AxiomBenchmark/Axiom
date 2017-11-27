@@ -1,5 +1,6 @@
 [
     {
+        "id" : "FW1",
         "framework" : "FakeWork1",
         "script" : "/javascript/test/fakework.js",
         "tests" : [
@@ -18,6 +19,7 @@
         ]
     },
     {
+        "id" : "FW2",
         "framework" : "FakeWork2",
         "script" : "/javascript/test/fakework2.js",
         "tests" : [

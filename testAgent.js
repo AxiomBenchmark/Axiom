@@ -1,5 +1,3 @@
-const uuidv4 = require('uuid/v4');
-
 class TestAgent {
     constructor(test, socket, completion) {
         this.frameworks = test;
@@ -10,6 +8,7 @@ class TestAgent {
         console.log(JSON.stringify(socket.handshake.headers));
         this.id = socket.id;
         this.setup();
+        this.testsComplete = 0;
     }
 
     setup() {
@@ -23,6 +22,8 @@ class TestAgent {
         }.bind(this));
 
         this.socket.on('test_result', function(result) {
+            this.testsComplete++;
+            this.sendProgress();
             this.logResult(result);
             this.nextTest();
         }.bind(this));
@@ -54,6 +55,21 @@ class TestAgent {
             console.log('tests for this framework complete.');
             this.loadNextFramework();
         }
+    }
+
+    sendProgress() {
+        //compute number of tests if not done so already
+        if (!this.testCount) {
+            this.testCount = 0;
+            this.frameworks.forEach(framework => {
+                framework.tests.forEach(test => {
+                    this.testCount++;
+                });
+            });
+        }
+
+        var percentage = (this.testsComplete / this.testCount) * 100;
+        this.socket.emit('benchmark_progress', {'percent' : percentage});
     }
 
     //tell client that benchmark is done.

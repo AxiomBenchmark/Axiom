@@ -5,9 +5,19 @@ module.exports = function(http) {
   //page to configure tests
   router.get('/configure', function(req, res) {
     
-        var testOptions = include('contract.js');
-        console.log(testOptions);
-        res.render('benchmark/options', testOptions);
+        var testOps = include('fakeTestProfiles.json');
+        var names = [];
+        testOps.forEach(element => {
+          var ele = {
+            'name' : element.framework,
+            'id' : element.id
+          };
+          names = names.concat(ele);
+        });
+        var params = {
+          'testdefs' : names
+        };
+        res.render('benchmark/configure', params);
   });
 
   router.get('/run', function(req, res) {
