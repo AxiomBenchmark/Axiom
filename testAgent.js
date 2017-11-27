@@ -1,38 +1,68 @@
+const uuidv4 = require('uuid/v4');
+
 class TestAgent {
-    constructor(test, socket) {
-        this.test = test;
-        this.testIndex = 0;
+    constructor(test, socket, completion) {
+        this.frameworks = test;
+        this.frameworkIndex = -1;
+        this.testIndex = -1;
         this.socket = socket;
+        this.completion = completion;
+        console.log(JSON.stringify(socket.handshake.headers));
+        this.id = socket.id;
+        this.setup();
     }
 
-    begin() {
+    setup() {
 
-        //callback when a result comes back
-        var onResult = function(result) {
+        this.socket.on('benchmark_ready', function() {
+            this.loadNextFramework();
+        }.bind(this));
+
+        this.socket.on('framework_ready', function() {
+            this.nextTest();
+        }.bind(this));
+
+        this.socket.on('test_result', function(result) {
             this.logResult(result);
             this.nextTest();
-        }.bind(this);
+        }.bind(this));
+    }
 
-        //when socket result, call above function
-        this.socket.on('result', function(params) {
-            onResult(params);
-        });
-
-        //start the tests.
-        console.log('starting test agent...');
-        this.nextTest();
+    //request setup for the next framework
+    loadNextFramework() {
+        console.log('loadNextFramework()');
+        this.frameworkIndex++;
+        var framework = this.frameworks[this.frameworkIndex];
+        if (framework) {
+            console.log('sending framework_load');
+            this.testIndex = -1;
+            this.socket.emit('framework_load', framework);
+        }
+        else {
+            console.log('no more frameworks - benchmark_complete');
+            this.done();
+        }
     }
 
     nextTest() {
-        var next = this.test.tests[this.testIndex];
-        if (next === undefined) {
-            console.log('tests complete.');
-            return;
-        }
-
-        console.log('sending next test (' + next.name + ')...');
         this.testIndex++;
-        this.socket.emit('request', next);
+        var test = this.frameworks[this.frameworkIndex].tests[this.testIndex];
+        if (test) {
+            this.socket.emit('test_request', test);
+        }
+        else {
+            console.log('tests for this framework complete.');
+            this.loadNextFramework();
+        }
+    }
+
+    //tell client that benchmark is done.
+    //TODO: send result id to client
+    done() {
+        var fake = {
+            'id' : 'AAA-BBB-CCC'
+        };
+        this.socket.emit('benchmark_done', fake);
     }
     
     logResult(result) {

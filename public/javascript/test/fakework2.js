@@ -1,4 +1,4 @@
-suite = class FakeFrameworkTestSuite extends FrameworkTest {
+suite = class FakeyMcFakework extends FrameworkTest {
     
     constructor() {
         super();
@@ -9,7 +9,7 @@ suite = class FakeFrameworkTestSuite extends FrameworkTest {
         this[params.function](callback);
     }
 
-    testA(callback) {
+    testD(callback) {
         for (var i = 0; i < 300; i++) {
             $('#testbench').append('<span id=\'' + i + '\'><span>');
         }
@@ -21,13 +21,13 @@ suite = class FakeFrameworkTestSuite extends FrameworkTest {
         var end = performance.now()
         var delta = end - start;
         var results = {
-            'test' : 'testA',
+            'test' : 'testD',
             'time' : delta
         }
         callback(results);
     }
 
-    testB(callback) {
+    testE(callback) {
         for (var i = 300; i < 600; i++) {
             $('#testbench').append('<span id=\'' + i + '\'><span>');
         }
@@ -39,13 +39,13 @@ suite = class FakeFrameworkTestSuite extends FrameworkTest {
         var end = performance.now()
         var delta = end - start;
         var results = {
-            'test' : 'testB',
+            'test' : 'testE',
             'time' : delta
         }
         callback(results);
     }
     
-    testC(callback) {
+    testF(callback) {
         for (var i = 600; i < 900; i++) {
             $('#testbench').append('<span id=\'' + i + '\'><span>');
         }
@@ -57,7 +57,7 @@ suite = class FakeFrameworkTestSuite extends FrameworkTest {
         var end = performance.now()
         var delta = end - start;
         var results = {
-            'test' : 'testC',
+            'test' : 'testF',
             'time' : delta
         }
         callback(results);

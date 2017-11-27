@@ -1,0 +1,38 @@
+[
+    {
+        "framework" : "FakeWork1",
+        "script" : "/javascript/test/fakework.js",
+        "tests" : [
+            {
+                "name" : "The A Test",
+                "function" : "testA"
+            },
+            {
+                "name" : "The B Test",
+                "function" : "testB"
+            },
+            {
+                "name" : "The C Test",
+                "function" : "testC"
+            }
+        ]
+    },
+    {
+        "framework" : "FakeWork2",
+        "script" : "/javascript/test/fakework2.js",
+        "tests" : [
+            {
+                "name" : "The D Test",
+                "function" : "testD"
+            },
+            {
+                "name" : "The E Test",
+                "function" : "testE"
+            },
+            {
+                "name" : "The F Test",
+                "function" : "testF"
+            }
+        ]
+    }
+]

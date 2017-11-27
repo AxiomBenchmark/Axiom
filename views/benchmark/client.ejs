@@ -1,15 +1,15 @@
 <html>
     <head>
         <title><%= title %> Test</title>
+        <link rel="stylesheet" href="/stylesheets/styles.css">
         <style>
-            body {
-                margin: 0px;
-            }
             #testbench {
                 background: #364554;
                 height: 90%;
                 width: 100%;
                 display: inline-block;
+                overflow: hidden;
+                font-size: 5px;
             }
             #statusbar {
                 background: #FF5D55;
@@ -17,14 +17,54 @@
                 width: 100%;
                 overflow: hidden;
             }
+
+            progress {
+                background-color: #364554;
+                display: block;
+                margin: auto;
+                margin-top: 20px;
+                width: 50%;
+                border: 0px none;
+                background-color: #364554;
+                color: white;
+            }
+
+            progress::-webkit-progress-bar {  
+                background-color: #364554;
+            }  
+            progress::-webkit-progress-value {  
+                background-color: white;
+            }  
+
+            progress::-moz-progress-bar {  
+                background-color: white;
+            }  
+
             span {
                 overflow-wrap: normal;
+            }
+
+            .loader {
+                border: 16px solid #f3f3f3; /* Light grey */
+                border-top: 16px solid #364554; /* Blue */
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                animation: spin 2s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
         </style>
     </head>
     <body>
         <div id="testbench"></div>
-        <div id="statusbar"></div>
+        <div id="statusbar">
+            <progress id="progressBar" max="100"></progress>
+            <!--<span class="loader"></span>-->
+        </div>
         <script src='https://code.jquery.com/jquery-3.2.1.js'></script>
         <script src='/socket.io/socket.io.js'></script>
         <script src='/javascript/test/base.js'></script>

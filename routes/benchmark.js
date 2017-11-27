@@ -1,25 +1,20 @@
 module.exports = function(http) {
   var express = require('express');
   var router = express.Router();
-  
-  router.get('/', function(req, res) {
-    console.log('looking up id...');
-    console.log('not implemented.');
 
-    var fake = {
-      title: 'asdasdsad',
-      rt: '/javascript/test/fakework.js'
-    };
-
-    req.re
+  //page to configure tests
+  router.get('/configure', function(req, res) {
+    
+        var testOptions = include('contract.js');
+        console.log(testOptions);
+        res.render('benchmark/options', testOptions);
   });
 
-  router.get('/:test', function(req, res) {
-    console.log('looking up id...');
-    console.log('not implemented.');
+  router.get('/run', function(req, res) {
 
+    console.log(req.query.react ===  'on');
     var fake = {
-      title: 'asdasdsad',
+      title: 'Fakework',
       rt: '/javascript/test/fakework.js'
     };
     

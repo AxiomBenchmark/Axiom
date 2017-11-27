@@ -1,3 +1,10 @@
+global.abs_path = function(path) {
+  return __dirname + path;
+}
+global.include = function(file) {
+  return require(abs_path('/' + file));
+}
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -20,8 +27,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')))
 
 var http = require('http').Server(app);
-var socMan = require(path.join(__dirname, 'socketManager.js'))(http);
-var bench = require('./routes/benchmark')(http);
+var testAgentManager = require(path.join(__dirname, 'TestAgentManager.js'));
+testAgentManager = new testAgentManager(http);
+var bench = include('routes/benchmark')(http);
 app.use('/benchmark', bench);
 
 // catch 404 and forward to error handler

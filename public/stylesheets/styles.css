@@ -4,6 +4,7 @@ html {
 }
 body {
     background-color: #364554;
+    margin: 0px;
 }
 a:link {
    text-decoration:  none;
@@ -12,7 +13,7 @@ a:link {
 h1 {
     color: #FF5D55;
     display: block;
-    font-family: 'Flamente', serif;
+    font-family: 'Sanchez', serif;
     font-size: 20vmin;
     margin-bottom: 0;
     text-align: center;
@@ -74,10 +75,4 @@ p {
     font-family: 'Abel', sans-serif;
     font-size:  1em;
     margin-top: 0;
-}
-
-
-@font-face {
-    font-family: "Flamente";
-    src: url("Flamante-Serif-Bold-FFP.ttf") format("truetype");
 }
