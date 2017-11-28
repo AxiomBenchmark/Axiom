@@ -3,15 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js",
+    "postinstall": "npm run build",
+    "build": "browserify -t reactify tests/react.js -o public/framework_bin/react.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
+    "browserify": "^14.5.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "^2.5.7",
     "express": "~4.15.5",
     "morgan": "~1.9.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "reactify": "^1.1.1",
     "serve-favicon": "~2.4.5",
     "socket.io": "^2.0.4"
   }

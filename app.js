@@ -24,7 +24,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
 var http = require('http').Server(app);
 var testAgentManager = require(path.join(__dirname, 'TestAgentManager.js'));
@@ -54,4 +54,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-http.listen(3000);
+var port = process.env.PORT || 3000;
+console.log('server listening on port ' + port + '...');
+http.listen(port);
