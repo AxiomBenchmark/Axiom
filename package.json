@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "postinstall": "npm run build",
-    "build": "browserify -t reactify tests/react.js -o public/framework_bin/react.js"
+    "build": "browserify -t reactify tests/react.js -o public/framework_bin/react.js && browserify tests/vue.js -o public/framework_bin/vue.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -19,6 +19,7 @@
     "react-dom": "^16.2.0",
     "reactify": "^1.1.1",
     "serve-favicon": "~2.4.5",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "vue": "^2.5.9"
   }
 }
