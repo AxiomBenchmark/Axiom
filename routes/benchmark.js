@@ -25,7 +25,7 @@ module.exports = function(http) {
     console.log(req.query.react ===  'on');
     var fake = {
       title: 'Fakework',
-      rt: '/javascript/test/fakework.js'
+      rt: '/testapps_bin/react.js'
     };
     
     res.render('benchmark/client', fake);

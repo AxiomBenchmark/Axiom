@@ -57,6 +57,10 @@ typings/
 # dotenv environment variables file
 .env
 
-# framework builds
-public/framework_bin/*
-!public/framework_bin/README.md
+# test app builds
+public/testapps_bin/*
+!public/testapps_bin/README.md
+
+# test builds
+public/test_bin/*
+!public/test_bin/README.md

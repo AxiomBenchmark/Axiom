@@ -3,14 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js",
     "postinstall": "npm run build",
-    "build": "browserify -t reactify tests/react.js -o public/framework_bin/react.js && browserify tests/vue.js -o public/framework_bin/vue.js"
+    "bs": "npm run copytests && npm run build && npm run start",
+    "start": "node app.js",
+    "copytests" : "copyfiles tests/*.js public/test_bin",
+    "build": "browserify -t reactify testapps/react.js -o public/testapps_bin/react.js && browserify -t vueify testapps/vue.js -o public/testapps_bin/vue.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
     "browserify": "^14.5.0",
     "cookie-parser": "~1.4.3",
+    "copyfiles": "^1.2.0",
     "debug": "~2.6.9",
     "ejs": "^2.5.7",
     "express": "~4.15.5",
@@ -20,6 +23,7 @@
     "reactify": "^1.1.1",
     "serve-favicon": "~2.4.5",
     "socket.io": "^2.0.4",
-    "vue": "^2.5.9"
+    "vue": "^2.5.9",
+    "vueify": "^9.4.1"
   }
 }
