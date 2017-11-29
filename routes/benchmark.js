@@ -1,35 +1,34 @@
-module.exports = function(http) {
+const TestLibrary = include('TestProfiles.json');
+
+//build options for configuration page
+var options = [];
+TestLibrary.forEach(element => {
+  var ele = {
+    'name' : element.framework,
+    'id' : element.id
+  };
+  options = options.concat(ele);
+});
+
+var benchmark_routes = function(http) {
   var express = require('express');
   var router = express.Router();
 
   //page to configure tests
   router.get('/configure', function(req, res) {
-    
-        var testOps = include('fakeTestProfiles.json');
-        var names = [];
-        testOps.forEach(element => {
-          var ele = {
-            'name' : element.framework,
-            'id' : element.id
-          };
-          names = names.concat(ele);
-        });
+
         var params = {
-          'testdefs' : names
+          'frameworks' : options
         };
+
         res.render('benchmark/configure', params);
   });
 
   router.get('/run', function(req, res) {
-
-    console.log(req.query.react ===  'on');
-    var fake = {
-      title: 'Fakework',
-      rt: '/testapps_bin/react.js'
-    };
-    
-    res.render('benchmark/client', fake);
+    res.render('benchmark/client', null);
   });
 
   return router;
 }
+
+module.exports = benchmark_routes;

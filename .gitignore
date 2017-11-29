@@ -58,8 +58,8 @@ typings/
 .env
 
 # test app builds
-public/testapps_bin/*
-!public/testapps_bin/README.md
+public/testapp_bin/*
+!public/testapp_bin/README.md
 
 # test builds
 public/test_bin/*

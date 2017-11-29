@@ -1,7 +1,7 @@
-suite = class FakeFrameworkTestSuite extends FrameworkTest {
+suite = class FakeFrameworkTestSuite {
     
     constructor() {
-        super();
+        $('#testbench').html('');
     }
 
     runTest(params, callback) {

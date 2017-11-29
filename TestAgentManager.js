@@ -6,15 +6,12 @@ class TestAgentManager {
         io = require('socket.io')(http);
 
         console.log('TestAgentManager initializing.');
-        
-        //temporary fake test
-        var test = include('fakeTestProfiles');
     
         io.on('connection', function(socket) {
             var completion = function() {
                 console.log('done');
             }
-            var newAgent = new TestAgent(test, socket, completion);
+            var newAgent = new TestAgent(socket, completion);
         }.bind(this));
     }
 }

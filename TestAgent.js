@@ -1,19 +1,28 @@
+var TestLibrary = include('TestProfiles.json');
+
 class TestAgent {
-    constructor(test, socket, completion) {
-        this.frameworks = test;
+    constructor(socket, completion) {
         this.frameworkIndex = -1;
         this.testIndex = -1;
         this.socket = socket;
         this.completion = completion;
-        console.log(JSON.stringify(socket.handshake.headers));
-        this.id = socket.id;
         this.setup();
         this.testsComplete = 0;
     }
 
     setup() {
 
-        this.socket.on('benchmark_ready', function() {
+        this.socket.on('benchmark_request', function(params) {
+            console.log(params);
+
+            this.frameworks = [];
+            TestLibrary.forEach(function(test) {
+                var id = test.id;
+                if (params[id] === 'on') {
+                    this.frameworks = this.frameworks.concat(test);
+                }
+            }.bind(this));
+            
             this.loadNextFramework();
         }.bind(this));
 
@@ -35,9 +44,14 @@ class TestAgent {
         this.frameworkIndex++;
         var framework = this.frameworks[this.frameworkIndex];
         if (framework) {
+            var params = {
+                'testapp_script' : '/testapp_bin/' + framework.testapp_script,
+                'test_script' : '/test_bin/' + framework.test_script
+            };
+            console.log(params);
             console.log('sending framework_load');
             this.testIndex = -1;
-            this.socket.emit('framework_load', framework);
+            this.socket.emit('framework_load', params);
         }
         else {
             console.log('no more frameworks - benchmark_complete');

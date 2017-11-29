@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "postinstall": "npm run build",
-    "bs": "npm run copytests && npm run build && npm run start",
+    "bs": "npm run build && npm run start",
     "start": "node app.js",
-    "copytests" : "copyfiles tests/*.js public/test_bin",
-    "build": "browserify -t reactify testapps/react.js -o public/testapps_bin/react.js && browserify -t vueify testapps/vue.js -o public/testapps_bin/vue.js"
+    "build": "copyfiles -u 1 tests/*.js public/test_bin && browserify -t reactify testapps/react.js -o public/testapp_bin/react.js && browserify -t vueify testapps/vue.js -o public/testapp_bin/vue.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
