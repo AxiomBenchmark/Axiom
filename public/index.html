@@ -11,6 +11,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="stylesheets/styles.css">
+        <link rel="stylesheet" href="stylesheets/navigation.css">
+        <script src="javascript/navigation.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title></title>
     </head>
@@ -18,11 +20,11 @@
         <div id="home" class="container">
         <h1>Axiom</h1>
         <h2 class="home">A streaming thing for people who make things that stream</h2>
-        <div class="rect-btn">
-            <a class="btn" href="benchmark/configure">Run Benchmark</a>
+        <div id="run" class="rect-btn"  >
+            <a class="btn" data-x="0" data-y="0" href="benchmark/configure">Run Benchmark</a>
         </div>
         <div class="row rect-btn">
-            <a class="btn" href="about.html">What is this</a>
+            <a class="btn" data-x="0" data-y="1" href="about.html">What is this</a>
         </div>
         <div class="row">
             <div class="col-sm-6">

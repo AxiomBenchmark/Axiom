@@ -2,15 +2,20 @@
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="/stylesheets/styles.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="/stylesheets/navigation.css">
+        <script src="/javascript/navigation.js"></script>
     </head>
     <body class="container">
         <div class="row" style="height: 50px;"></div>
             <div class="text-center">
                 <form action="run">
-                    <% for (var i = 0; i < frameworks.length; i++) {%>
-                        <label style="margin-bottom: 20px;"><input type="checkbox" name="<%=frameworks[i].id%>"/><span class="noselect">  <%=frameworks[i].name%></span></label><br>
+                    <% var i;
+                    for (i = 0; i < frameworks.length; i++) {%>
+                        <label data-x="0" data-y="<%=i%>" style="margin-bottom: 20px;"><input type="checkbox" name="<%=frameworks[i].id%>"/><span class="noselect">  <%=frameworks[i].name%></span></label><br>
                     <%}%>
-                    <input type="submit" value="Submit">
+                    <input data-x="0" data-y="<%=i%>" type="submit" value="Submit">
                 </form>
             </div>
         </div>

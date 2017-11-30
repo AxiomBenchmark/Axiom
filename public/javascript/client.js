@@ -86,7 +86,7 @@ socket.on('test_request', (params) => {
 
 socket.on('benchmark_done', function(params) {
     log('benchmark complete. Result id: ' + params.id);
-    alert(params.tempresults);
+    $('#testbench').html("<p>"+JSON.stringify(params.tempresults) + "</p>");
 });
 
 socket.on('benchmark_progress', (params) => {
