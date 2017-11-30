@@ -9,7 +9,7 @@
     "build": "npm run build_copy && npm run build_react && npm run build_vue",
     "build_copy": "copyfiles -u 1 tests/*.js public/test_bin && copyfiles -u 1 testapps/*.html public/testapp_bin",
     "build_react": "browserify -t reactify testapps/react.js -o public/testapp_bin/react.js",
-    "build_vue": "browserify -t vueify testapps/vue.js -o public/testapp_bin/vue.js",
+    "build_vue": "browserify -t vueify testapps/vue.js -o public/testapp_bin/vue.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
