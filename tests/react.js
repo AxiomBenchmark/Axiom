@@ -1,7 +1,6 @@
 suite = class FakeFrameworkTestSuite {
     
     constructor() {
-        $('#testbench').html('');
     }
 
     runTest(params, callback) {
@@ -10,21 +9,15 @@ suite = class FakeFrameworkTestSuite {
     }
 
     testA(callback) {
-        for (var i = 0; i < 300; i++) {
-            $('#testbench').append('<span id=\'' + i + '\'><span>');
-        }
         var start = performance.now();
-        for (var i = 0; i < 100000; i++) {
-            var id = Math.floor(Math.random() * 1200);
-            $('#' + id).html(' ' + i);
-        }
-        var end = performance.now()
-        var delta = end - start;
-        var results = {
-            'test' : 'testA',
-            'time' : delta
-        }
-        callback(results);
+        setTimeout(function() {
+            var end = performance.now();
+            var results = {
+                'test': 'testA',
+                'delta': end - start
+            };
+            callback(results);
+        }, 1000);
     }
 
     testB(callback) {

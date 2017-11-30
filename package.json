@@ -6,7 +6,7 @@
     "postinstall": "npm run build",
     "bs": "npm run build && npm run start",
     "start": "node app.js",
-    "build": "copyfiles -u 1 tests/*.js public/test_bin && browserify -t reactify testapps/react.js -o public/testapp_bin/react.js && browserify -t vueify testapps/vue.js -o public/testapp_bin/vue.js"
+    "build": "copyfiles -u 1 tests/*.js public/test_bin && copyfiles -u 1 testapps/*.html public/testapp_bin && browserify -t reactify testapps/react.js -o public/testapp_bin/react.js && browserify -t vueify --config webpack.config.js testapps/vue.js -o public/testapp_bin/vue.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -24,5 +24,8 @@
     "socket.io": "^2.0.4",
     "vue": "^2.5.9",
     "vueify": "^9.4.1"
+  },
+  "browser": {
+    "vue": "vue/dist/vue.common.js"
   }
 }

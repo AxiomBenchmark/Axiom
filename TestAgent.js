@@ -8,6 +8,7 @@ class TestAgent {
         this.completion = completion;
         this.setup();
         this.testsComplete = 0;
+        this.results = [];
     }
 
     setup() {
@@ -46,7 +47,8 @@ class TestAgent {
         if (framework) {
             var params = {
                 'testapp_script' : '/testapp_bin/' + framework.testapp_script,
-                'test_script' : '/test_bin/' + framework.test_script
+                'testapp_html' : '/testapp_bin/' + framework.testapp_html,
+                'test_script' : '/test_bin/' + framework.test_script,
             };
             console.log(params);
             console.log('sending framework_load');
@@ -90,12 +92,14 @@ class TestAgent {
     //TODO: send result id to client
     done() {
         var fake = {
-            'id' : 'AAA-BBB-CCC'
+            'id' : 'AAA-BBB-CCC',
+            'tempresults' : JSON.stringify(this.results)
         };
         this.socket.emit('benchmark_done', fake);
     }
     
     logResult(result) {
+        this.results = this.results.concat(result);
         console.log('result: ' + JSON.stringify(result));
     }
 }

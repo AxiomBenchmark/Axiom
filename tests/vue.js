@@ -1,7 +1,6 @@
 suite = class FakeFrameworkTestSuite {
     
     constructor() {
-        $('#testbench').html('');
     }
 
     runTest(params, callback) {

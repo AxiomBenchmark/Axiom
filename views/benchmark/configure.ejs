@@ -1,12 +1,18 @@
 <html>
-    <head></head>
-    <body>
-        <form action="run">
-            <% for (var i = 0; i < frameworks.length; i++) {%>
-                <input type="checkbox" name="<%=frameworks[i].id%>"><%=frameworks[i].name%></input>
-            <%}%>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/styles.css">
+    </head>
+    <body class="container">
+        <div class="row" style="height: 50px;"></div>
+            <div class="text-center">
+                <form action="run">
+                    <% for (var i = 0; i < frameworks.length; i++) {%>
+                        <label style="margin-bottom: 20px;"><input type="checkbox" name="<%=frameworks[i].id%>"/><span class="noselect">  <%=frameworks[i].name%></span></label><br>
+                    <%}%>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
-        <input type="submit" value="Submit">
-        </form>
     </body>
 </html>

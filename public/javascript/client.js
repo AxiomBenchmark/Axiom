@@ -30,27 +30,46 @@ socket.on('connect', () => {
 //the framework script should generate a UUT which can be unloaded later.
 socket.on('framework_load', (params) => {
 
+    //reset bench
     UUT = null;
-    $.getScript(params.testapp_script, function(data, status, code){
-        if (status === 'success') {
-            log('testapp ' + params.testapp_script + ' loaded.');
-            $.getScript(params.test_script, function(data, status, code){
-                console.log(window.UUT);
-                if (status === 'success') {
-                    log('test ' + params.test_script + ' loaded. Ready!');
-                    socket.emit('framework_ready');
-                }
-                else {
-                    var message = 'status: ' + status + '\ncode: ' + code;
-                    log(message);
-                }
-            });
-        }
-        else {
-            var message = 'status: ' + status + '\ncode: ' + code;
-            log(message);
-        }
-    });
+    $('#testbench').empty();
+
+    //setup function to load the test app, then the test itself.
+    //may be called immediately or after html is loaded, see below.
+    var loadAppAndTestScript = function() {
+        $.getScript(params.testapp_script, function(data, status, code){
+            if (status === 'success') {
+                log('testapp ' + params.testapp_script + ' loaded.');
+                $.getScript(params.test_script, function(data, status, code){
+                    console.log(window.UUT);
+                    if (status === 'success') {
+                        log('test ' + params.test_script + ' loaded. Ready!');
+                        socket.emit('framework_ready');
+                    }
+                    else {
+                        var message = 'status: ' + status + '\ncode: ' + code;
+                        log(message);
+                    }
+                });
+            }
+            else {
+                var message = 'status: ' + status + '\ncode: ' + code;
+                log(message);
+            }
+        });
+    }
+
+    //If framework requires HTML templating, load that in before app / test.
+    //Otherwise, go ahead and load app / test.
+    if (params.testapp_html) {
+        console.log('fetching html...');
+        $('#testbench').load(params.testapp_html, function() {
+            loadAppAndTestScript();
+        });
+    }
+    else {
+        loadAppAndTestScript();
+    }
 });
 
 //executes the requested test on the loaded framework
@@ -67,9 +86,9 @@ socket.on('test_request', (params) => {
 
 socket.on('benchmark_done', function(params) {
     log('benchmark complete. Result id: ' + params.id);
+    alert(params.tempresults);
 });
 
 socket.on('benchmark_progress', (params) => {
-    console.log(params.percent);
     $('#progressBar').val(params.percent);
 });
