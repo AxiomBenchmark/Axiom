@@ -16,9 +16,17 @@ var urlParams;
        urlParams[decode(match[1])] = decode(match[2]);
 })();
 
+var resetUUT = function() {
+    window.UUT = {
+        runTest : function (params, callback) {
+          console.log('running function ' + params.function + ' on UUT.');
+          this[params.function](callback);
+        }
+    };
+}
+
 
 var socket = io();
-var UUT;
 var suite;
 
 socket.on('connect', () => {
@@ -31,7 +39,7 @@ socket.on('connect', () => {
 socket.on('framework_load', (params) => {
 
     //reset bench
-    UUT = null;
+    resetUUT();
     $('#testbench').empty();
 
     //setup function to load the test app, then the test itself.
@@ -41,9 +49,9 @@ socket.on('framework_load', (params) => {
             if (status === 'success') {
                 log('testapp ' + params.testapp_script + ' loaded.');
                 $.getScript(params.test_script, function(data, status, code){
-                    console.log(window.UUT);
                     if (status === 'success') {
                         log('test ' + params.test_script + ' loaded. Ready!');
+                        console.log(window.UUT);
                         socket.emit('framework_ready');
                     }
                     else {
@@ -74,14 +82,17 @@ socket.on('framework_load', (params) => {
 
 //executes the requested test on the loaded framework
 socket.on('test_request', (params) => {
+    console.log(params);
     log('test_request: ' + params.name + ' requested.');
 
     var callback = function(result) {
         log(params.name + ' done. Result: ' + JSON.stringify(result));
+        result.function = params.function;
+        result.name = params.name;
         socket.emit('test_result', result);
     }
 
-    UUT.runTest(params, callback);
+    window.UUT.runTest(params, callback);
 });
 
 socket.on('benchmark_done', function(params) {

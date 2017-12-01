@@ -1,102 +1,97 @@
 
-var position = {
+var navAgent = {
     x : 0,
     y : 0,
     getElement : function(x, y) {
         return $('[data-x=' + x + '][data-y=' + y + ']');
     },
     getCurrentElement : function() {
-        return $('[data-x=' + position.x + '][data-y=' + position.y + ']');
+        return $('[data-x=' + navAgent.x + '][data-y=' + navAgent.y + ']');
+    },
+    navigate : function(direction) {
+        var x = navAgent.x;
+        var y = navAgent.y;
+        switch (direction) {
+            case 'up':
+                y--;
+                break;
+            case 'down':
+                y++;
+                break;
+            case 'left':
+                x--;
+                break;
+            case 'right':
+                x++;
+                break;
+        }
+        console.log('navigating ' + direction);
+        console.log('selecting (' + x + ',' + y +')');
+        
+    
+        //if there was no previous element, get 0,0
+        if (!navAgent.prevElement) {
+            x = 0;
+            y = 0;
+        }
+    
+        var element = navAgent.getElement(x,y);
+    
+        if (element.length) {
+    
+            if (navAgent.prevElement) {
+                navAgent.prevElement.removeClass('selected');
+            }
+            
+            navAgent.prevElement = element;
+            navAgent.x = x;
+            navAgent.y = y;
+            element.addClass('selected');
+        }
     }
 }
-var prevElement;
 
-position.upperX = 0;
-while ($('[data-x=' + position.upperX + ']').length) {
-    position.upperX++;
-}
-
-position.upperY = 0;
-while ($('[data-y=' + position.upperY + ']').length) {
-    position.upperY++;
-}
-
-position.lowerX = 0;
-while ($('[data-x=' + position.lowerX + ']').length) {
-    position.lowerX--;
-}
-
-position.lowerY = 0;
-while ($('[data-y=' + position.lowerY + ']').length) {
-    position.lowerY--;
-}
-
-position.lowerX++;
-position.lowerY++;
-position.upperX--;
-position.upperY--;
-
-
-console.log('(' + position.lowerX + ',' + position.upperX + '),(' + position.lowerY + ',' + position.upperY + ')');
-
-$( document ).ready(function() {
-    prevElement = position.getCurrentElement();
-    prevElement.addClass('selected');
-});
+navAgent.upperX = 0;
+navAgent.upperY = 0;
+navAgent.lowerX = 0;
+navAgent.lowerY = 0;
+while ($('[data-x=' + navAgent.upperX + ']').length) { navAgent.upperX++; }
+while ($('[data-y=' + navAgent.upperY + ']').length) { navAgent.upperY++; }
+while ($('[data-x=' + navAgent.lowerX + ']').length) { navAgent.lowerX--; }
+while ($('[data-y=' + navAgent.lowerY + ']').length) { navAgent.lowerY--; }
+navAgent.lowerX++;
+navAgent.lowerY++;
+navAgent.upperX--;
+navAgent.upperY--;
+console.log('(' + navAgent.lowerX + ',' + navAgent.upperX + '),(' + navAgent.lowerY + ',' + navAgent.upperY + ')');
 
 $(document).on('keydown', function(e) {
-    e.preventDefault();
-    //up: 38
-    //down: 40
-    //left: 37
-    //right: 39
-    //enter: 13
-    switch (e.keyCode) {
+    switch (e.which) {
         case 38:
-            navigate('up');
+            e.preventDefault();
+            navAgent.navigate('up');
             break;
         case 40:
-            navigate('down');
+            e.preventDefault();
+            navAgent.navigate('down');
             break;
         case 37:
-            navigate('left');
+            e.preventDefault();
+            navAgent.navigate('left');
             break;
         case 39:
-            navigate('right');
+            e.preventDefault();
+            navAgent.navigate('right');
             break;
-        case 13:
-            var ele = position.getCurrentElement();
+        case 13: //enter
+        case 32: //space (may want to remove)
+            e.preventDefault();
+            var ele = navAgent.getCurrentElement();
             console.log(ele.length);
             console.log('click!');
             $(ele)[0].click();
+            break;
+        case 8: //backspace
+            window.history.back();
     }
 });
-
-var navigate = function(direction) {
-    var x = position.x;
-    var y = position.y;
-    switch (direction) {
-        case 'up':
-            y--;
-            break;
-        case 'down':
-            y++;
-            break;
-        case 'left':
-            x--;
-            break;
-        case 'right':
-            x++;
-            break;
-    }
-    console.log('navigating ' + direction);
-    console.log('selecting (' + x + ',' + y +')');
-    var element = position.getElement(x,y);
-    if (element.length && prevElement) {
-        position.x = x;
-        position.y = y;
-        prevElement.removeClass('selected');
-        prevElement = element;
-        element.addClass('selected');
-    }
-}

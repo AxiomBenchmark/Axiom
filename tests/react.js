@@ -57,4 +57,4 @@ suite = class FakeFrameworkTestSuite {
     }
 }
 
-UUT = new suite();
+//UUT = new suite();
