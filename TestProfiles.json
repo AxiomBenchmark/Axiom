@@ -6,8 +6,8 @@
         "test_script" : "react.js",
         "tests" : [
             {
-                "name" : "The A Test",
-                "function" : "testA"
+                "name" : "Slider Test",
+                "function" : "sliderTest"
             }
         ]
     },

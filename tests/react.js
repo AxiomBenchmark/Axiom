@@ -8,12 +8,12 @@ suite = class FakeFrameworkTestSuite {
         this[params.function](callback);
     }
 
-    testA(callback) {
+    sliderTest(callback) {
         var start = performance.now();
         setTimeout(function() {
             var end = performance.now();
             var results = {
-                'test': 'testA',
+                'test': 'sliderTest',
                 'delta': end - start
             };
             callback(results);

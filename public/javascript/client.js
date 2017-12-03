@@ -20,6 +20,7 @@ var resetUUT = function() {
     window.UUT = {
         runTest : function (params, callback) {
           console.log('running function ' + params.function + ' on UUT.');
+          console.log(this);
           this[params.function](callback);
         }
     };

@@ -63,6 +63,31 @@ a.icons {
     color: #e5534c;
 }
 
+.slick-list {
+    height: auto !important;
+}
+.slick-slide {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px;
+}
+.slick-active {
+      left: 0 !important;
+      border: none !important;
+      margin: 0 auto !important;
+      height: initial !important;
+      clip: initial !important;
+      overflow: visible !important;
+      padding: inherit !important;
+      position: inherit !important;
+    }
+
+
 .about {
     display: block;
     margin: 0 auto;
