@@ -1,0 +1,78 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="my-button">
+    <template>
+        <style include="shared-styles">
+        :host {
+            display: block;
+
+            padding: 10px;
+        }
+        </style>
+
+        <div>
+            <button on-click="clicked"> {{count}} </button>
+        </div>
+    </template>
+
+    <script>
+        class MyButton extends Polymer.Element {
+          static get is() { return 'my-button'; }
+    
+          static get properties() {
+            return {
+              count: {
+                type: Number,
+                notify: true,
+                reflectToAttribute: true,
+                value: 0
+              }
+            }
+          }
+          
+          constructor() {
+            super()    
+            console.log("constructed")
+            t0 = performance.now()
+          }
+          
+          clicked () {
+            t0 = performance.now()
+            this.set('count', this.count + 1)
+          }
+    
+          ready() {
+            t1 = performance.now()
+            timing.rend += t1 - t0;
+            super.ready()
+            console.log("ready")
+            console.log(timing.rend)
+          }
+    
+          connectedCallback() {
+            t1 = performance.now()
+            timing.mount += t1 - t0;
+            super.connectedCallback();
+            console.log("connected")
+            console.log(timing.mount)
+          }
+    
+          disconnectedCallback() {
+            t1 = performance.now()
+            timing.dest += t1 - t0;
+            super.disconnectedCallback();
+            console.log("disconnected")
+            console.log(timing.dest)
+          }
+    
+          attributeChangedCallback() {
+            t1 = performance.now()
+            timing.update += t1 - t0;
+            console.log("updated")
+            console.log(timing.update)
+          }
+        }
+    
+        window.customElements.define(MyButton.is, MyButton);
+      </script>
+</dom-module>

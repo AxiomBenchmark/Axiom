@@ -6,8 +6,29 @@
         "test_script" : "react.js",
         "tests" : [
             {
-                "name" : "Slider Test",
-                "function" : "sliderTest"
+                "name" : "lifecycleTestA",
+                "function" : "lifecycleTestA"
+            },
+            {
+                "name" : "lifecycleTestB",
+                "function" : "lifecycleTestB"
+            }
+        ]
+    },
+    {
+        "id" : "polymer",
+        "framework" : "Polymer",
+        "testapp_script" : "polymer.js",
+        "testapp_html" : "polymer.html",
+        "test_script" : "polymer.js",
+        "tests" : [
+            {
+                "name" : "The A Test",
+                "function" : "testA"
+            },
+            {
+                "name" : "The B Test",
+                "function" : "testB"
             }
         ]
     },

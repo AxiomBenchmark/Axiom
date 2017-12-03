@@ -93,7 +93,7 @@ class TestAgent {
     done() {
         var fake = {
             'id' : 'AAA-BBB-CCC',
-            'tempresults' : JSON.stringify(this.results)
+            'tempresults' : this.results
         };
         this.socket.emit('benchmark_done', fake);
     }
