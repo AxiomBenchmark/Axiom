@@ -37,16 +37,12 @@
         "testapp_html" : "vue.html",
         "tests" : [
             {
-                "name" : "The A Test",
+                "name" : "testA",
                 "function" : "testA"
             },
             {
-                "name" : "The B Test",
+                "name" : "testB",
                 "function" : "testB"
-            },
-            {
-                "name" : "The C Test",
-                "function" : "testC"
             }
         ]
     }
