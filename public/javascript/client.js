@@ -92,7 +92,7 @@ socket.on('test_request', (params) => {
     var callback = function(result) {
         log(params.name + ' done. Result: ' + JSON.stringify(result));
         // result.function = params.function;
-        // result.name = params.name;
+        //result.name = params.name;
         socket.emit('test_result', result);
     }
 
@@ -104,6 +104,7 @@ socket.on('benchmark_done', function(params) {
     console.log(params.tempresults)
     // console.log(JSON.parse(params.tempresults))
     // $('#testbench').html("<p>"+JSON.stringify(params.tempresults) + "</p>");
+    $('#testbench').empty();
     $('#testbench').append(params.tempresults.map(function(cv){
         // return "<div>" + Object.entries(cv).forEach(function(key, value) {return "<span>" + JSON.stringify(key) + ": " + JSON.stringify(value) + "</span>"}+ "</div>");
         return "<div>" + Object.entries(cv).map(function(p) {

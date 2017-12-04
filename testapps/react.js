@@ -99,7 +99,7 @@ var testA = function(callback) {
     }
 
     results = {};
-    results.test = 'Lifecycle Test A'
+    results.test = 'React Lifecycle Test A'
     results.render = timing.rend/1000
     results.destroy = timing.dest/1000
     results.mount = timing.mount/1000

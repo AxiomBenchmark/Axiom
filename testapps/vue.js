@@ -18,37 +18,37 @@ var vm = function() {
       message: 'Hello Vue.js!'
     },
     beforeCreate: function() {
-      console.log("before created!")
+      //console.log("before created!")
     },
     created: function() {
-      console.log("created!")
+      //console.log("created!")
       t1 = performance.now()
     },
     beforeMount: function() {
-      console.log("before mounted!")
+      //console.log("before mounted!")
     },
     mounted: function() {
-      console.log("mounted!")
+      //console.log("mounted!")
       t2 = performance.now()
     },
     beforeUpdate: function() {
-      console.log("before updated!")
+      ////consolelog("before updated!")
     },
     updated: function() {
-      console.log("updated!")
+      ////consolelog("updated!")
     },
     beforeDestroy: function() {
-      console.log("before destroyed!")
+      //consolelog("before destroyed!")
     },
     destroyed: function() {
-      console.log("destroyed!")
+      //consolelog("destroyed!")
       t1 = performance.now()
     },
     activated: function() {
-      console.log("activated!")
+      //consolelog("activated!")
     },
     deactivated: function() {
-      console.log("deactivated!")
+      //consolelog("deactivated!")
     },
   });
 }
@@ -68,7 +68,7 @@ var testA = function(callback) {
     timing.dest += t1 - t0
   }
   
-  console.log("boo")
+  //consolelog("boo")
   results = {};
   results.test = "Vue Lifecycle Test A"
   results.render = timing.rend/1000
@@ -88,4 +88,4 @@ var testB = function(callback) {
 window.UUT.testA = testA;
 window.UUT.testB = testB;
 window.UUT.vm = vm();
-console.log(window.UUT)
+//consolelog(window.UUT)
