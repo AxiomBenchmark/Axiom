@@ -3,7 +3,6 @@
         "id" : "react",
         "framework" : "React",
         "testapp_script" : "react.js",
-        "test_script" : "react.js",
         "tests" : [
             {
                 "name" : "lifecycleTestA",
@@ -20,7 +19,6 @@
         "framework" : "Polymer",
         "testapp_script" : "polymer.js",
         "testapp_html" : "polymer.html",
-        "test_script" : "polymer.js",
         "tests" : [
             {
                 "name" : "The A Test",
@@ -37,7 +35,6 @@
         "framework" : "Vue",
         "testapp_script" : "vue.js",
         "testapp_html" : "vue.html",
-        "test_script" : "vue.js",
         "tests" : [
             {
                 "name" : "The A Test",

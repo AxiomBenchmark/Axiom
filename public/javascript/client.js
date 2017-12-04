@@ -43,41 +43,44 @@ socket.on('framework_load', (params) => {
     resetUUT();
     $('#testbench').empty();
 
-    //setup function to load the test app, then the test itself.
-    //may be called immediately or after html is loaded, see below.
-    var loadAppAndTestScript = function() {
-        $.getScript(params.testapp_script, function(data, status, code){
-            if (status === 'success') {
-                log('testapp ' + params.testapp_script + ' loaded.');
-                $.getScript(params.test_script, function(data, status, code){
-                    if (status === 'success') {
-                        log('test ' + params.test_script + ' loaded. Ready!');
-                        console.log(window.UUT);
-                        socket.emit('framework_ready');
-                    }
-                    else {
-                        var message = 'status: ' + status + '\ncode: ' + code;
-                        log(message);
-                    }
-                });
-            }
-            else {
-                var message = 'status: ' + status + '\ncode: ' + code;
-                log(message);
-            }
-        });
+    //set script to load JS after HTML
+    var scriptLoader = function() {
+        //load JS, if available (should always be)
+        if (params.testapp_script) {
+            console.log('loading JS...');
+            $.getScript(params.testapp_script, function(data, status, code) {
+                if (status === 'success') {
+                    console.log(params.testapp_script + ' loaded. (JS)');
+                    socket.emit('framework_ready');
+                }
+                else {
+                    console.log('JS Loading ERROR ' + code);
+                }
+            });
+        }
+        else {
+            console.log('no JS to load.');
+        }
     }
 
-    //If framework requires HTML templating, load that in before app / test.
-    //Otherwise, go ahead and load app / test.
+    //load HTML first, if available (sometimes)
     if (params.testapp_html) {
-        console.log('fetching html...');
-        $('#testbench').load(params.testapp_html, function() {
-            loadAppAndTestScript();
+        console.log('loading HTML...');
+        $('#testbench').load(params.testapp_html, function(data, status, code) {
+            if (status === 'success') {
+                console.log(params.testapp_html + ' loaded. (HTML)');
+                scriptLoader();
+            }
+            else {
+                console.log('Html Loading ERROR ' + code);
+            }
+            
         });
     }
+    //otherwise , just load the JS
     else {
-        loadAppAndTestScript();
+        console.log('no HTML to load.');
+        scriptLoader();
     }
 });
 

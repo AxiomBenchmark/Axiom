@@ -129,3 +129,4 @@ var testB = function(callback) {
 window.UUT.lifecycleTestA = testA;
 window.UUT.lifecycleTestB = testB;
 window.UUT.app = App;
+console.log(window.UUT);

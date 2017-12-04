@@ -45,11 +45,16 @@ class TestAgent {
         this.frameworkIndex++;
         var framework = this.frameworks[this.frameworkIndex];
         if (framework) {
-            var params = {
-                'testapp_script' : '/testapp_bin/' + framework.testapp_script,
-                'testapp_html' : '/testapp_bin/' + framework.testapp_html,
-                'test_script' : '/test_bin/' + framework.test_script,
-            };
+            var params = {};
+
+            if (framework.testapp_script) {
+                params.testapp_script = '/testapp_bin/' + framework.testapp_script;
+            }
+
+            if (framework.testapp_html) {
+                params.testapp_html = '/testapp_bin/' + framework.testapp_html;
+            }
+            
             console.log(params);
             console.log('sending framework_load');
             this.testIndex = -1;

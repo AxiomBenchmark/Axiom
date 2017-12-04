@@ -60,7 +60,3 @@ typings/
 # test app builds
 public/testapp_bin/*
 !public/testapp_bin/README.md
-
-# test builds
-public/test_bin/*
-!public/test_bin/README.md
