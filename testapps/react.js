@@ -1,140 +1,131 @@
-
 var React = require('react');
+var Component = React.Component;
 var ReactDOM = require('react-dom');
-var Slider = require('react-slick').default;
+// import './index.css';
+var t0 = 0, t1 = 0;
 
-// import('./index.css');
+var timing = {
+    rend: 0,
+    dest: 0,
+    mount: 0,
+    update: 0
+};
 
-class MultipleItems extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      tmax: 0,
-      tmin: 100,
-      tsum: 0,
-      tcnt: 0,
-    };
+var results = {};
 
-    window.UUT.sliderTest = this.sliderTest.bind(this);
-    //window.UUT.slider = this.slider.bind(this);
-    //window.UUT.slider.slickNext = this.slider.slickNext.bind(this);
-    // this.sliderTest = this.sliderTest.bind(this);
-  }
+class Buttons extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {count: 1};
+    }
+    
+    componentDidMount() {
+        t1 = performance.now();
+        timing.mount += t1 - t0;
+    }
+    
+    componentDidUpdate() {
+        t1 = performance.now();
+        timing.update += t1 - t0;
+    }
+    
+    shouldComponentUpdate(nextProps, nextState) {
+        t0 = performance.now();
+        if (this.props.color !== nextProps.color) {
+        return true;
+        }
+        if (this.state.count !== nextState.count) {
+        return true;
+        }
+        return false;
+    }
+    
+    clicky() {
+        this.setState({count: this.state.count + 1})
+    }
+    
+    clickTest() {
+        
+    }
+    
+    render() {
+        t0 = performance.now();
+        return (
+        <button
+            color={this.props.color}
+            onClick={this.clicky.bind(this)}>
+            Count: {this.state.count}
+        </button>
+        );
+    }
+}
 
-  next() {
-    console.log(this);
-    console.log(this.slider);
-    this.slider.slickNext();
-  }
+class App extends Component {
+    render() {  
+        return (
+            <div>
+                {/* <h1>Lifecycle Rendering and Destroying Test</h1>
+                <div>
+                    Average Render Time {timing.rend/1000} ms
+                </div>
+                <div>
+                    Average Destroy Time {timing.dest/1000} ms
+                </div>
+                <div>
+                    Average Mount Time {timing.mount/1000} ms
+                </div>
+                <div>
+                    Average Update Time {timing.update} ms
+                </div> */}
+                <Buttons id="Button" /*ref={this.simulateClick}*/ name="Buttons" />
+            </div>
+        );
+    }
+};
 
-  sliderTest(callback){
-    setTimeout(function() {this.setState({
-      tmax: 0,
-      tmin: 100,
-      tsum: 0,
-      tcnt: 0,
-    }, function() {
-    })}.bind(this), 5000);
+// rendering and destroying test
+var testA = function(callback) {
+    console.log("Running Test A")
+    for(var i = 0; i < 1000; i++) {
+        t0 = performance.now();
+        ReactDOM.render(<App/>, document.getElementById('testbench'));
+        t1 = performance.now();
+        timing.rend += t1 - t0;
+    
+        t0 = performance.now();
+        ReactDOM.unmountComponentAtNode(document.getElementById('testbench'));
+        t1 = performance.now();
+        timing.dest += t1 - t0;
+    }
 
-    this.spamClicks();
+    results = {};
+    results.test = 'Lifecycle Test A'
+    results.render = timing.rend/1000
+    results.destroy = timing.dest/1000
+    results.mount = timing.mount/1000
 
-    console.log("Running test...");
-    var results = {
-      'test' : 'Slider Test',
-      'max time': this.state.tmax,
-      'min time': this.state.tmin,
-      'avg time': this.state.tsum / this.state.tcnt
-    };
+    // rerender the app
+    // ReactDOM.render(<App/>, document.getElementById('testbench'));
     callback(results);
-  }
-  
-  componentDidUpdate() {
-    if (this.state.tcnt <= 100){
-      this.spamClicks();
-    }
-    else{
-      
-        console.log("max: " + this.state.tmax + " ms, avg: " + (this.state.tsum / this.state.tcnt) + " ms, min: " + this.state.tmin + " ms");
-        
-    }
+}
 
-  }
-
-  spamClicks() {
-    // console.log("max: " + this.state.tmax + " ms, avg: " + (this.state.tsum / this.state.tcnt) + " ms, min: " + this.state.tmin + " ms");
-    var t0, t1;
-    var min = 0, max = 0, sum = 0, cnt = this.state.tcnt;
-      t0 = performance.now();
-      this.next()
-      t1 = performance.now();
-      if ((t1 - t0) > this.state.tmax)
-        max = (t1 - t0);
-      else
-        max = this.state.tmax;
-
-      if ((t1 - t0) < this.state.tmin)
-        min = (t1 - t0);
-      else
-        min = this.state.tmin;
-
-      sum = this.state.tsum + (t1 - t0);
-      cnt = cnt + 1;
-      
-      setTimeout(function() {this.setState({
-        tmax: max,
-        tmin: min,
-        tsum: sum,
-        tcnt: cnt,
-      }, function() {
-      })}.bind(this), 0);
-  }
-    render() {
-      const settings = {
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        centerMode: true,
-        centerPadding: '60px',
-      };
-      return (
-        <div>
-          <div className = 'slider'>
-            <Slider  ref={c => this.slider = c }{...settings}>
-              <div><h2>1</h2></div>
-              <div><h2>2</h2></div>
-              <div><h2>3</h2></div>
-              <div><h2>4</h2></div>
-            </Slider>
-          </div>
-          <div>
-            <StartButton onClickEvent={this.sliderTest}/>
-          </div>
-        </div>
-      );
-    }
-  }
-
-  class StartButton extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        isClicked: false,
-      }
+// updating test
+var testB = function(callback) {
+    
+    console.log("Running Test B")
+    var b = document.getElementById('root');
+    
+    // click the button 1000 times
+    for(var i = 0; i < 100; i++) {
+        console.log(b)
     }
 
-    render() {
-      return (
-        <div>
-          <button className = 'StartButton' onClick={this.props.onClickEvent}>Start</button>
-        </div>
-      );
-        
-      }
-    }
+    results = {};
+    results.test = 'Lifecycle Test B'
+    results.update = timing.update
+    callback(results);
+}
 
-  // ========================================
-  
-  ReactDOM.render(
-    <MultipleItems />,
-    document.getElementById('testbench')
-  );
+window.UUT.lifecycleTestA = testA;
+window.UUT.lifecycleTestB = testB;
+window.UUT.app = App;
