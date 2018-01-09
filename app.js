@@ -5,27 +5,44 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+let express = require('express');
+let path = require('path');
+let favicon = require('serve-favicon');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
 
-var app = express();
+// create main express app
+let app = express();
+
+// create reporting app and bind to /reporting
+var reportingApp = express();
+app.use('/reporting', reportingApp);
+
+// configure jsreport engine
+let jsreport = require('jsreport')({
+  express: { app: reportingApp },
+  appPath: '/reporting'
+});
+
+// initialize jsreport
+jsreport.init().catch(function (e) {
+  console.error(e);
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs')
 
 // uncomment after placing our favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'faicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// create benchmark server and bind to /benchmark
 var http = require('http').Server(app);
 var testAgentManager = require(path.join(__dirname, 'TestAgentManager.js'));
 testAgentManager = new testAgentManager(http);
@@ -54,6 +71,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// start server
 var port = process.env.PORT || 3000;
 console.log('server listening on port ' + port + '...');
 http.listen(port);

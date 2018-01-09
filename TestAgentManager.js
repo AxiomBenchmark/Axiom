@@ -1,4 +1,4 @@
-var TestAgent = include('TestAgent');
+let TestAgent = include('TestAgent');
 var io;
 
 class TestAgentManager {

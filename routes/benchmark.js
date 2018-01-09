@@ -1,6 +1,7 @@
+// available tests are configured in TestProfiles.json
 const TestLibrary = include('TestProfiles.json');
 
-//build options for configuration page
+// build options for configuration page
 var options = [];
 TestLibrary.forEach(element => {
   var ele = {

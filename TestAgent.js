@@ -1,21 +1,20 @@
-var TestLibrary = include('TestProfiles.json');
+const TestLibrary = include('TestProfiles.json');
 
 class TestAgent {
     constructor(socket, completion) {
         this.frameworkIndex = -1;
         this.testIndex = -1;
+        this.testsComplete = 0;
         this.socket = socket;
         this.completion = completion;
-        this.setup();
-        this.testsComplete = 0;
         this.results = [];
+        this.setupListeners();
     }
 
-    setup() {
-
+    // setup socket listeners
+    setupListeners() {
         this.socket.on('benchmark_request', function(params) {
-            console.log(params);
-
+            // add each framework requested to the to-do list
             this.frameworks = [];
             TestLibrary.forEach(function(test) {
                 var id = test.id;
@@ -23,7 +22,8 @@ class TestAgent {
                     this.frameworks = this.frameworks.concat(test);
                 }
             }.bind(this));
-            
+
+            // start testing
             this.loadNextFramework();
         }.bind(this));
 
@@ -39,9 +39,8 @@ class TestAgent {
         }.bind(this));
     }
 
-    //request setup for the next framework
+    // request setup for the next framework
     loadNextFramework() {
-        console.log('loadNextFramework()');
         this.frameworkIndex++;
         var framework = this.frameworks[this.frameworkIndex];
         if (framework) {
@@ -54,18 +53,16 @@ class TestAgent {
             if (framework.testapp_html) {
                 params.testapp_html = '/testapp_bin/' + framework.testapp_html;
             }
-            
-            console.log(params);
-            console.log('sending framework_load');
+
             this.testIndex = -1;
             this.socket.emit('framework_load', params);
         }
         else {
-            console.log('no more frameworks - benchmark_complete');
             this.done();
         }
     }
 
+    // request next test
     nextTest() {
         this.testIndex++;
         var test = this.frameworks[this.frameworkIndex].tests[this.testIndex];
@@ -73,13 +70,13 @@ class TestAgent {
             this.socket.emit('test_request', test);
         }
         else {
-            console.log('tests for this framework complete.');
             this.loadNextFramework();
         }
     }
 
+    // send client a percent complete update
     sendProgress() {
-        //compute number of tests if not done so already
+        // compute number of tests if not done so already
         if (!this.testCount) {
             this.testCount = 0;
             this.frameworks.forEach(framework => {
@@ -93,8 +90,8 @@ class TestAgent {
         this.socket.emit('benchmark_progress', {'percent' : percentage});
     }
 
-    //tell client that benchmark is done.
-    //TODO: send result id to client
+    // tell client that benchmark is done.
+    // TODO: send result id to client
     done() {
         var fake = {
             'id' : 'AAA-BBB-CCC',
