@@ -1,4 +1,4 @@
-let TestAgent = include('TestAgent');
+let TestAgent = include('benchmark_server/TestAgent');
 var io;
 
 class TestAgentManager {

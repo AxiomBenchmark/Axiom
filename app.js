@@ -5,6 +5,9 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
+//load postgres credentials
+require('dotenv').config();
+
 let express = require('express');
 let path = require('path');
 let favicon = require('serve-favicon');
@@ -14,21 +17,6 @@ let bodyParser = require('body-parser');
 
 // create main express app
 let app = express();
-
-// create reporting app and bind to /reporting
-var reportingApp = express();
-app.use('/reporting', reportingApp);
-
-// configure jsreport engine
-let jsreport = require('jsreport')({
-  express: { app: reportingApp },
-  appPath: '/reporting'
-});
-
-// initialize jsreport
-jsreport.init().catch(function (e) {
-  console.error(e);
-})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // create benchmark server and bind to /benchmark
 var http = require('http').Server(app);
-var testAgentManager = require(path.join(__dirname, 'TestAgentManager.js'));
+var testAgentManager = include('benchmark_server/TestAgentManager.js');
 testAgentManager = new testAgentManager(http);
 var bench = include('routes/benchmark')(http);
 app.use('/benchmark', bench);
@@ -75,3 +63,6 @@ app.use(function(err, req, res, next) {
 var port = process.env.PORT || 3000;
 console.log('server listening on port ' + port + '...');
 http.listen(port);
+
+//test sql server connection
+require(path.join(__dirname, 'data_access/DatabaseAgent'));
