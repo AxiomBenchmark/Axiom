@@ -1,4 +1,6 @@
+const http = require('http');
 const TestLibrary = include('TestProfiles.json');
+const Database = require('../data_access/DatabaseAgent');
 
 class TestAgent {
     constructor(socket, completion) {
@@ -8,35 +10,77 @@ class TestAgent {
         this.socket = socket;
         this.completion = completion;
         this.results = [];
-        this.setupListeners();
+
+        //setup socket listeners
+        this.socket.on('benchmark_request', this.onBenchmarkRequest.bind(this));
+        this.socket.on('framework_ready', this.onFrameworkReady.bind(this));
+        this.socket.on('test_result', this.onTestResult.bind(this));
     }
 
-    // setup socket listeners
-    setupListeners() {
-        this.socket.on('benchmark_request', function(params) {
-            // add each framework requested to the to-do list
-            this.frameworks = [];
-            TestLibrary.forEach(function(test) {
-                var id = test.id;
-                if (params[id] === 'on') {
-                    this.frameworks = this.frameworks.concat(test);
-                }
-            }.bind(this));
+    //store the benchmark session in the database
+    createBenchmark(userAgent, callback) {
+        // interpret the user agent string sent by client for benchmark metadata.
+        const url = "http://useragentapi.com/api/v4/json/" + process.env.USERAGENT_APIKEY + "/" + encodeURIComponent(userAgent);
+        http.get(url, (res) => {
+            let rawData = '';
+            res.on('data', (chunk) => { rawData += chunk; });
+            res.on('end', () => {
+              try {
+                // once user agent api is done, save benchmark
+                const data = JSON.parse(rawData).data;
+                Database.newBenchmark(data.os_name, data.os_version, data.browser_name,
+                    data.browser_version, data.ua_type, data.engine_name, data.engine_version, (id) => {
+                        // set id and continue
+                        this.id = id;
+                        callback();
+                    });
+              } catch (e) {
+                console.error(e.message);
+              }
+            });
+        })
+    }
 
-            // start testing
-            this.loadNextFramework();
+    // when the client requests a benchmark test
+    onBenchmarkRequest(params) {
+        // add each framework that is turned on to the to-do list
+        this.frameworks = [];
+        TestLibrary.forEach(function(test) {
+            var id = test.id;
+            if (params[id] === 'on') {
+                this.frameworks = this.frameworks.concat(test);
+            }
         }.bind(this));
 
-        this.socket.on('framework_ready', function() {
-            this.nextTest();
-        }.bind(this));
+        if (this.frameworks.length) {
+            Database.generateUniqueId((id) => {
+                this.createBenchmark(params.userAgent, () => {
+                    // start testing
+                    this.loadNextFramework();
+                });
+            });
+        } else {
+            console.log('empty benchmark request!');
+        }
+    }
 
-        this.socket.on('test_result', function(result) {
-            this.testsComplete++;
-            this.sendProgress();
-            this.logResult(result);
-            this.nextTest();
-        }.bind(this));
+    // when the client reports that the current framework is ready
+    onFrameworkReady() {
+        this.nextTest();
+    }
+
+    // when the client sends the results of a test
+    onTestResult(result) {
+        const name = result.test;
+        delete result.test;
+        for (var i in result) {
+            const resultname = name + ': ' + i;
+            Database.newResult(this.frameworkid, resultname, "NOT IMPLMTD", result[i]);
+        }
+
+        this.testsComplete++;
+        this.sendProgress();
+        this.nextTest();
     }
 
     // request setup for the next framework
@@ -44,18 +88,22 @@ class TestAgent {
         this.frameworkIndex++;
         var framework = this.frameworks[this.frameworkIndex];
         if (framework) {
-            var params = {};
+            Database.newFramework(this.id, framework.framework, framework.version, (id) => {
+                this.frameworkid = id;
+            
+                var params = {};
 
-            if (framework.testapp_script) {
-                params.testapp_script = '/testapp_bin/' + framework.testapp_script;
-            }
+                if (framework.testapp_script) {
+                    params.testapp_script = '/testapp_bin/' + framework.testapp_script;
+                }
 
-            if (framework.testapp_html) {
-                params.testapp_html = '/testapp_bin/' + framework.testapp_html;
-            }
+                if (framework.testapp_html) {
+                    params.testapp_html = '/testapp_bin/' + framework.testapp_html;
+                }
 
-            this.testIndex = -1;
-            this.socket.emit('framework_load', params);
+                this.testIndex = -1;
+                this.socket.emit('framework_load', params);
+            });
         }
         else {
             this.done();
@@ -70,6 +118,7 @@ class TestAgent {
             this.socket.emit('test_request', test);
         }
         else {
+            // no more tests for this framework - next!
             this.loadNextFramework();
         }
     }
@@ -93,16 +142,12 @@ class TestAgent {
     // tell client that benchmark is done.
     // TODO: send result id to client
     done() {
-        var fake = {
-            'id' : 'AAA-BBB-CCC',
+        var data = {
+            'id' : this.id,
             'tempresults' : this.results
         };
-        this.socket.emit('benchmark_done', fake);
-    }
-    
-    logResult(result) {
-        this.results = this.results.concat(result);
-        console.log('result: ' + JSON.stringify(result));
+        this.socket.emit('benchmark_done', data);
+        Database.completeBenchmark(this.id);
     }
 }
 

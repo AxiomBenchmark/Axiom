@@ -32,6 +32,7 @@ var suite;
 
 socket.on('connect', () => {
     log('connected to server socket. Listening...');
+    urlParams.userAgent = navigator.userAgent;
     socket.emit('benchmark_request', urlParams);
 });
 

@@ -2,6 +2,7 @@
     {
         "id" : "react",
         "framework" : "React",
+        "version" : "1.0.0",
         "testapp_script" : "react.js",
         "tests" : [
             {
@@ -13,6 +14,7 @@
     {
         "id" : "polymer",
         "framework" : "Polymer",
+        "version" : "1.0.0",
         "testapp_script" : "polymer.js",
         "testapp_html" : "polymer.html",
         "tests" : [
@@ -25,6 +27,7 @@
     {
         "id" : "vue",
         "framework" : "Vue",
+        "version" : "1.0.0",
         "testapp_script" : "vue.js",
         "testapp_html" : "vue.html",
         "tests" : [
