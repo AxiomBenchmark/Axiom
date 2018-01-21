@@ -8,10 +8,15 @@
             {
                 "name" : "React Lifecycle Test A",
                 "function" : "lifecycleTestA"
+            },
+            {
+                "name" : "create Rows Test",
+                "function" : "testRows"
             }
+
         ]
     },
-    {
+     {
         "id" : "polymer",
         "framework" : "Polymer",
         "version" : "1.0.0",

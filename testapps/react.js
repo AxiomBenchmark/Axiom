@@ -60,6 +60,106 @@ class Buttons extends Component {
     }
 }
 
+
+class Rows extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+            id: 1
+        };
+        this.add = this.add.bind(this);
+        this.update = this.update.bind(this);
+        this.swapRows = this.swapRows.bind(this);
+    }
+    printDuration() {
+        t1 = performance.now();
+    }
+    componentDidUpdate() {
+        this.printDuration();
+    }
+    componentDidMount() {
+        this.printDuration();
+    }
+    random(max) {
+        return Math.round(Math.random() * 1000) % max;
+    }
+    add() {
+        t0 = performance.now();
+        const { id } = this.state;
+        var count = 1000;
+        var adjectives = ["pretty", "large", "big", "small", "tall", "short", 
+        "long", "handsome", "plain", "quaint", "clean", "elegant", "easy", 
+        "angry", "crazy", "helpful", "mushy", "odd", "unsightly", "adorable", 
+        "important", "inexpensive", "cheap", "expensive", "fancy"];
+        var colours = ["red", "yellow", "blue", "green", "pink", "brown", 
+        "purple", "brown", "white", "black", "orange"];
+        var nouns = ["table", "chair", "house", "bbq", "desk", "car", "pony", 
+        "cookie", "sandwich", "burger", "pizza", "mouse", "keyboard"];
+        var items = [];
+        for (var i = 0; i < count; i++) {
+            items.push({ id: id++, 
+                label: adjectives[this.random(adjectives.length)] + " " + colours[this.random(colours.length)] + " " + nouns[this.random(nouns.length)] });
+        }
+        const obj = { items, id };
+        this.setState({ data: obj.data, id: obj.id });
+    }
+    /* updates every tenth row */
+    update() {
+        t0 = performance.now();
+        mod = 10;
+        const newData = [...this.state.data];
+        for (let i = 0; i < newData.length; i += 10) {
+            newData[i] = Object.assign({}, newData[i], 
+            { label: newData[i].label + ' !!!' });
+        }
+        this.setState({ data: newData });
+    }
+
+    swapRows() {
+        t0 = performance.now();
+        const newData = [...this.state.data];
+        if (newData.length > 998) {
+            let temp = newData[1];
+            newData[1] = newData[998];
+            newData[998] = temp;
+        }
+        this.setState({ data: newData });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const { data, selected } = this.state;
+        const nextData = nextState.data;
+        const nextSelected = nextState.selected;
+        return !(data.length === nextData.length 
+            && data.every((v, i) => v === nextData[i])) || selected != nextSelected;
+    }
+
+    render() {
+        let rows = this.state.data.map((d, i) => {
+            return <Row key={d.id} data={d}></Row>
+        });
+        return (<div className="container" id="textTable">
+            <div className="col-md-6">
+                <div className="row">
+                    <div className="col-sm-6 smallpad">
+                        <button type="button" className="btn btn-primary btn-block" id="add" onClick={this.add}>Create Rows</button>
+                    </div>
+                    <div className="col-sm-6 smallpad">
+                        <button type="button" className="btn btn-primary btn-block" id="update" onClick={this.update}>Update Rows</button>
+                    </div>
+                    <div className="col-sm-6 smallpad">
+                        <button type="button" className="btn btn-primary btn-block" id="swaprows" onClick={this.swapRows}>Swap Rows</button>
+                    </div>
+                </div>
+            </div>
+            <table className="table">
+                <tbody>{rows}</tbody>
+            </table>
+        </div>);
+    }
+    
+}
 class App extends Component {
     render() {  
         return (
@@ -78,6 +178,7 @@ class App extends Component {
                     Average Update Time {timing.update} ms
                 </div> */}
                 <Buttons id="Button" /*ref={this.simulateClick}*/ name="Buttons" />
+                <Rows id="Rows" name="Rows" />
             </div>
         );
     }
@@ -126,7 +227,31 @@ var testB = function(callback) {
     callback(results);
 }
 
+
+var testRows = function(callback) {
+    console.log("Running creation test");
+    results.test = 'Rows Test';
+    results = {};
+    var a = document.getElementById('add');
+    console.log(a);
+    ReactDOM.render(<Rows/>, document.getElementById('testbench'));
+    t1 = performance.now();
+    results.create = (t1 - t0) / 1000;
+    a = document.getElementById('update');
+    console.log(a);
+    ReactDOM.render(<Rows/>, document.getElementById('testbench'));
+    t1 = performance.now();
+    results.update = (t1 - t0) / 1000;
+    a  = document.getElementById('swaprows');
+    console.log(a);
+    t1 = performance.now();
+    results.swap = (t1 - t0) / 1000;
+    ReactDOM.unmountComponentAtNode(document.getElementById('testbench'));
+    callback(results);
+}
+
 window.UUT.lifecycleTestA = testA;
 window.UUT.lifecycleTestB = testB;
+window.UUT.testRows = testRows;
 window.UUT.app = App;
 console.log(window.UUT);
