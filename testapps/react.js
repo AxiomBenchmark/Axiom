@@ -200,7 +200,7 @@ var testA = function(callback) {
     }
 
     results = {};
-    results.test = 'React Lifecycle Test A'
+    results.test = 'Lifecycle Test A'
     results.render = timing.rend/1000
     results.destroy = timing.dest/1000
     results.mount = timing.mount/1000
@@ -230,8 +230,8 @@ var testB = function(callback) {
 
 var testRows = function(callback) {
     console.log("Running creation test");
-    results.test = 'Rows Test';
     results = {};
+    results.test = 'Rows Test';
     var a = document.getElementById('add');
     console.log(a);
     ReactDOM.render(<Rows/>, document.getElementById('testbench'));
