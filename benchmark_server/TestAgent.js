@@ -71,16 +71,19 @@ class TestAgent {
 
     // when the client sends the results of a test
     onTestResult(result) {
-        const name = result.test;
-        delete result.test;
-        for (var i in result) {
-            const resultname = name + ': ' + i;
-            Database.newResult(this.frameworkid, resultname, "NOT IMPLMTD", result[i]);
+        this.results = this.results.concat(result);
+        if (!result.test) {
+            console.log('test result failed to provide the name of the test.');
         }
-
-        this.testsComplete++;
-        this.sendProgress();
-        this.nextTest();
+        Database.newTest(this.frameworkid, result.test, (testid) => {
+            delete result.test;
+            for (var i in result) {
+                Database.newResult(testid, i, result[i]);
+            }
+            this.testsComplete++;
+            this.sendProgress();
+            this.nextTest();
+        });
     }
 
     // request setup for the next framework

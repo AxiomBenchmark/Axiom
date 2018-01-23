@@ -13,12 +13,12 @@ const newBenchmarkSQL =
 const newFrameworkSQL =
   "INSERT INTO benchmarkframeworks (benchmarkid, frameworkname, frameworkversion)\
    VALUES ($1, $2, $3) RETURNING frameworkid;"
-const newResultSQL_float = 
-  "INSERT INTO benchmarkframeworkresults (frameworkid, testid, resultdesc, floatresult)\
-   VALUES ($1, $2, $3, $4);"
-const newResultSQL_string = 
-  "INSERT INTO benchmarkframeworkresults (frameworkid, testid, resultdesc, stringresult)\
-   VALUES ($1, $2, $3, $4);"
+const newTestSQL = 
+  "INSERT INTO benchmarkframeworktests (frameworkid, description)\
+   VALUES ($1, $2) RETURNING testid;"
+const newResultSQL = 
+  "INSERT INTO benchmarkframeworktestresults (testid, description, floatresult)\
+   VALUES ($1, $2, $3);"
 const completeBenchmarkSQL =
   "UPDATE benchmarks SET iscomplete = TRUE WHERE benchmarkid = $1 ;"
 
@@ -68,19 +68,30 @@ class DatabaseAgent {
     });
   }
 
+  // add a new framework to a benchmark.
+  newTest(frameworkid, description, callback) {
+    console.log('newTest');
+    const values = [frameworkid, description];
+    pool.query(newTestSQL, values).then(res => {
+      callback(res.rows[0].testid);
+    });
+  }
+
   // add a new result to a framework
-  newResult(frameworkid, testid, testdesc, result) {
-    var querystring = newResultSQL_float;
-    if (parseFloat(result) === NaN) {
-      querystring = newResultSQL_string;
-    }
-    const values = [frameworkid, testid, testdesc, result];
-    pool.query(querystring, values);
+  newResult(testid, description, result) {
+    console.log('newResult');
+    const values = [testid, description, result];
+    pool.query(newResultSQL, values);
   }
 
   // make the benchmark as complete
   completeBenchmark(id) {
     pool.query(completeBenchmarkSQL, [id]);
+  }
+
+  //get the average of a certain test
+  getTestAverage(framework, test) {
+
   }
 }
 

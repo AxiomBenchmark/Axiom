@@ -6,7 +6,7 @@
         "testapp_script" : "react.js",
         "tests" : [
             {
-                "name" : "React Lifecycle Test A",
+                "name" : "Lifecycle Test A",
                 "function" : "lifecycleTestA"
             },
             {
@@ -14,19 +14,6 @@
                 "function" : "testRows"
             }
 
-        ]
-    },
-     {
-        "id" : "polymer",
-        "framework" : "Polymer",
-        "version" : "1.0.0",
-        "testapp_script" : "polymer.js",
-        "testapp_html" : "polymer.html",
-        "tests" : [
-            {
-                "name" : "The A Test",
-                "function" : "testA"
-            }
         ]
     },
     {
@@ -37,7 +24,7 @@
         "testapp_html" : "vue.html",
         "tests" : [
             {
-                "name" : "Vue Lifecycle Test A",
+                "name" : "Lifecycle Test A",
                 "function" : "testA"
             }
         ]

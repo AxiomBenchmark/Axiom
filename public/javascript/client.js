@@ -110,7 +110,7 @@ socket.on('benchmark_done', function(params) {
         // return "<div>" + Object.entries(cv).forEach(function(key, value) {return "<span>" + JSON.stringify(key) + ": " + JSON.stringify(value) + "</span>"}+ "</div>");
         return "<div>" + Object.entries(cv).map(function(p) {
             return "<p>" + p[0] + ": " + p[1] + "</p>"
-        }) + "</div"
+        }) + "</div>"
     } ))
 });
 
