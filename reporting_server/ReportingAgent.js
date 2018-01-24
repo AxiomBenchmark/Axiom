@@ -1,3 +1,5 @@
+const ResultDbAgent = require('../data_access/ReportingDbAgent');
+
 const ReportingAgent = function(query, callback) {
     var result = {};
 
@@ -14,11 +16,19 @@ const ReportingAgent = function(query, callback) {
     }
 
     if (query.benchmark) {
-        callback(result);
+        ResultDbAgent.getBenchmarkResults(query.benchmark, (err, res) => {
+            if (err) {
+                callback({'error' : err});
+                return;
+            }
+            else {
+                callback({'report' : JSON.stringify(res)});
+            }
+        })
         return;
     }
 
-    result.error = reportToRun + 'invalid/unknown query.';
+    result.error = 'invalid/unknown query.';
     callback(result);
     return;
 }

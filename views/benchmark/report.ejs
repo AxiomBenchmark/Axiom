@@ -10,13 +10,18 @@
         </style>
     </head>
     <body>
-        <%if (error) {%>
+        <%if (typeof error != 'undefined') {%>
             <script>
                 //wrapped in setTimeout to let the page finish rendering.
                 setTimeout(function() { alert('<%=error%>') }, 1);
             </script>
-        <% } else {%>
+        <% } else if (typeof report != 'undefined') {%>
         <div><%=report%></div>
+        <% } else { %>
+            <script>
+                //wrapped in setTimeout to let the page finish rendering.
+                setTimeout(function() { alert('no error or report defined.') }, 1);
+            </script>
         <% } %>
     </body>
 </html>

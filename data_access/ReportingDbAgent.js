@@ -24,6 +24,16 @@ const averageTestResultSQL =
         AND bft.description = $2\
   GROUP BY bftr.description;"
 
+const benchmarkResultSQL = 
+  "SELECT timestamp, iscomplete, operatingsystem, operatingsystemversion, \
+   browser, browserversion, hardwaretype, frameworkname, frameworkversion, \
+   bftr.description, floatresult, bft.description as testdesc \
+   FROM benchmarks b, benchmarkframeworks bf, \
+   benchmarkframeworktests bft, benchmarkframeworktestresults bftr \
+   WHERE b.benchmarkid = bf.benchmarkid AND \
+   bf.frameworkid = bft.frameworkid AND \
+   bft.testid = bftr.testid AND \
+   b.benchmarkid = $1;"
 
 class ReportingDbAgent {
 
@@ -32,17 +42,62 @@ class ReportingDbAgent {
     var queryString = averageTestResultSQL.format(func.toUpperCase());
     const values = [framework, test];
     pool.query(queryString, values, (err, res) => {
+      //if sql error
+      if (err) {
+        callback(err, null);
+        return;
+      }
+
       var report = {};
       res.rows.forEach(element => {
         report[element.description] = element[func.toLowerCase()];
       });
-      callback(report);
+      callback(null, report);
+    });
+  }
+
+  getBenchmarkResults(id, callback) {
+    pool.query(benchmarkResultSQL, [id], (err, res) => {
+      //if sql error
+      if (err) {
+        console.log(err);
+        callback('Database Problem. Please Try Again.',  null);
+        return;
+      }
+
+      //if report isn't complete
+      if (res.rows.length === 0 || res.rows[0].iscomplete === false) {
+        const error = 'Benchmark is not complete, or has failed.';
+        callback(error, null);
+        return;
+      }
+
+      // build the json result
+      var report = {};
+      report.timestamp = res.rows[0].timestamp;
+      report.operatingsystem = res.rows[0].operatingsystem;
+      report.operatingsystemversion = res.rows[0].operatingsystemversion;
+      report.browser = res.rows[0].browser;
+      report.browserversion =res.rows[0].browserversion;
+      report.hardwaretype = res.rows[0].hardwaretype;
+      report.frameworks = {};
+      res.rows.forEach(element => {
+        if (!report.frameworks[element.frameworkname]) {
+          report.frameworks[element.frameworkname] = {};
+        }
+        if (!report.frameworks[element.frameworkname]['results']) {
+          report.frameworks[element.frameworkname]['results'] = {};
+        }
+        if (!report.frameworks[element.frameworkname]['results'][element.testdesc]) {
+          report.frameworks[element.frameworkname]['results'][element.testdesc] = {};
+        }
+        report.frameworks[element.frameworkname]['results'][element.testdesc][element.description] = element.floatresult;
+        report.frameworks[element.frameworkname]['version'] = element.frameworkversion;
+      });
+      callback(null, report);
     });
   }
 }
 
 module.exports = new ReportingDbAgent();
 if (!process.env.SQL_DEBUG) return;
-module.exports.getTestMIN_AVG_MAX_COUNT('React', 'Lifecycle Test A', 'count', (rep) => {console.log('min\n' + JSON.stringify(rep))});
-module.exports.getTestMIN_AVG_MAX_COUNT('React', 'Lifecycle Test A', 'avg', (rep) => {console.log('avg\n' + JSON.stringify(rep))});
-module.exports.getTestMIN_AVG_MAX_COUNT('React', 'Lifecycle Test A', 'max', (rep) => {console.log('max\n' + JSON.stringify(rep))});
