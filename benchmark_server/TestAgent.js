@@ -1,6 +1,10 @@
 const http = require('http');
-const TestLibrary = include('TestProfiles.json');
-const Database = require('../data_access/DatabaseAgent');
+const TestLibrary = require('../TestProfiles.json');
+const ResultDbAgent = require('../data_access/ResultDbAgent');
+
+const truncate = function(num, places) {
+    return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
+  }
 
 class TestAgent {
     constructor(socket, completion) {
@@ -28,7 +32,7 @@ class TestAgent {
               try {
                 // once user agent api is done, save benchmark
                 const data = JSON.parse(rawData).data;
-                Database.newBenchmark(data.os_name, data.os_version, data.browser_name,
+                ResultDbAgent.newBenchmark(data.os_name, data.os_version, data.browser_name,
                     data.browser_version, data.ua_type, data.engine_name, data.engine_version, (id) => {
                         // set id and continue
                         this.id = id;
@@ -53,7 +57,7 @@ class TestAgent {
         }.bind(this));
 
         if (this.frameworks.length) {
-            Database.generateUniqueId((id) => {
+            ResultDbAgent.generateUniqueId((id) => {
                 this.createBenchmark(params.userAgent, () => {
                     // start testing
                     this.loadNextFramework();
@@ -72,10 +76,10 @@ class TestAgent {
     // when the client sends the results of a test
     onTestResult(result) {
         this.results = this.results.concat(result);
-        Database.newTest(this.frameworkid, result.test, (testid) => {
+        ResultDbAgent.newTest(this.frameworkid, result.test, (testid) => {
             delete result.test;
             for (var i in result) {
-                Database.newResult(testid, i, truncate(result[i], 7));
+                ResultDbAgent.newResult(testid, i, truncate(result[i], 7));
             }
             this.testsComplete++;
             this.sendProgress();
@@ -88,7 +92,7 @@ class TestAgent {
         this.frameworkIndex++;
         var framework = this.frameworks[this.frameworkIndex];
         if (framework) {
-            Database.newFramework(this.id, framework.framework, framework.version, (id) => {
+            ResultDbAgent.newFramework(this.id, framework.framework, framework.version, (id) => {
                 this.frameworkid = id;
             
                 var params = {};
@@ -147,7 +151,7 @@ class TestAgent {
             'tempresults' : this.results
         };
         this.socket.emit('benchmark_done', data);
-        Database.completeBenchmark(this.id);
+        ResultDbAgent.completeBenchmark(this.id);
     }
 }
 

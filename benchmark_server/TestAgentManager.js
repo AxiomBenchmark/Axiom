@@ -1,4 +1,5 @@
-let TestAgent = include('benchmark_server/TestAgent');
+let path = require('path');
+let TestAgent = require('./TestAgent');
 var io;
 
 class TestAgentManager {

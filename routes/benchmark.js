@@ -1,5 +1,5 @@
 // available tests are configured in TestProfiles.json
-const TestLibrary = include('TestProfiles.json');
+const TestLibrary = require('../TestProfiles.json');
 
 // build options for configuration page
 var options = [];
