@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Test</title>
+        <link rel="stylesheet" href="/stylesheets/styles.css">
+        <link rel="stylesheet" href="/stylesheets/navigation.css">
+        <style>
+            span {
+                overflow-wrap: normal;
+            }
+        </style>
+    </head>
+    <body>
+        <%if (error) {%>
+            <script>
+                //wrapped in setTimeout to let the page finish rendering.
+                setTimeout(function() { alert('<%=error%>') }, 1);
+            </script>
+        <% } else {%>
+        <div><%=report%></div>
+        <% } %>
+    </body>
+</html>

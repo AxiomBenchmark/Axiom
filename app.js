@@ -29,6 +29,9 @@ testAgentManager = new testAgentManager(http);
 var bench = require('./routes/benchmark')(http);
 app.use('/benchmark', bench);
 
+var bench = require('./routes/report')(http);
+app.use('/report', bench);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
