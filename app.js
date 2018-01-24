@@ -57,6 +57,8 @@ console.log('server listening on port ' + port + '...');
 http.listen(port);
 
 //test sql server connection
-console.log('note: sql stuff is done at the end of app.js for testing purposes.')
-require('./data_access/ReportingDbAgent');
-require('./data_access/ResultDbAgent');
+if (process.env.SQL_DEBUG) {
+  console.log('note: sql stuff is done at the end of app.js for testing purposes.')
+  require('./data_access/ReportingDbAgent');
+  require('./data_access/ResultDbAgent');
+}
