@@ -5,6 +5,10 @@ global.include = function(file) {
   return require(abs_path('/' + file));
 }
 
+global.truncate = function(num, places) {
+  return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
+}
+
 //load postgres credentials
 require('dotenv').config();
 

@@ -4,7 +4,7 @@ const BenchmarkIdGenerator = require('./BenchmarkIdGenerator');
 // connection pool to handle lots of requests.
 const pool = new Pool();
 
-// sql strings
+// BENCHMARK SQL STATEMENTS
 const verifyUniqueIdSQL = 
   "SELECT COUNT(*) FROM benchmarks WHERE benchmarkid = $1";
 const newBenchmarkSQL = 
@@ -21,6 +21,16 @@ const newResultSQL =
    VALUES ($1, $2, $3);"
 const completeBenchmarkSQL =
   "UPDATE benchmarks SET iscomplete = TRUE WHERE benchmarkid = $1 ;"
+
+// REPORTING SQL STATEMENTS
+const averageTestResultSQL = 
+  "SELECT bftr.description, AVG(bftr.floatresult)\
+  FROM benchmarkframeworks bf, benchmarkframeworktests bft, benchmarkframeworktestresults bftr\
+  WHERE bf.frameworkid = bft.frameworkid AND \
+        bft.testid = bftr.testid AND \
+        bf.frameworkname = $1 \
+        AND bft.description = $2\
+  GROUP BY bftr.description;"
 
 class DatabaseAgent {
 
@@ -79,7 +89,6 @@ class DatabaseAgent {
 
   // add a new result to a framework
   newResult(testid, description, result) {
-    console.log('newResult');
     const values = [testid, description, result];
     pool.query(newResultSQL, values);
   }
@@ -89,10 +98,18 @@ class DatabaseAgent {
     pool.query(completeBenchmarkSQL, [id]);
   }
 
-  //get the average of a certain test
-  getTestAverage(framework, test) {
-
+  //get the average of a certain tests results.
+  getTestAverage(framework, test, callback) {
+    const values = [framework, test];
+    pool.query(averageTestResultSQL, values, (err, res) => {
+      var report = {};
+      res.rows.forEach(element => {
+        report[element.description] = element.avg;
+      });
+      console.log(report);
+    });
   }
 }
 
 module.exports = new DatabaseAgent();
+module.exports.getTestAverage('React', 'Lifecycle Test A');

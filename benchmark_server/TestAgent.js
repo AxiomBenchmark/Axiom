@@ -72,13 +72,10 @@ class TestAgent {
     // when the client sends the results of a test
     onTestResult(result) {
         this.results = this.results.concat(result);
-        if (!result.test) {
-            console.log('test result failed to provide the name of the test.');
-        }
         Database.newTest(this.frameworkid, result.test, (testid) => {
             delete result.test;
             for (var i in result) {
-                Database.newResult(testid, i, result[i]);
+                Database.newResult(testid, i, truncate(result[i], 7));
             }
             this.testsComplete++;
             this.sendProgress();
