@@ -29,8 +29,12 @@ testAgentManager = new testAgentManager(http);
 var bench = require('./routes/benchmark')(http);
 app.use('/benchmark', bench);
 
+//create report endpoint and bind
 var bench = require('./routes/report')(http);
 app.use('/report', bench);
+
+//start reporting cron jobs
+require('./data_access/ReportingJobs');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
