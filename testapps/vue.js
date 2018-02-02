@@ -1,6 +1,6 @@
 var Vue = require('vue');
 
-var t0 = 0, t1 = 0, t2 = 0;
+var t0 = 0, t1 = 0, t2 = 0, t3 = 0;
 
 var timing = {
   rend: 0,
@@ -8,14 +8,14 @@ var timing = {
   mount: 0,
   update: 0
 };
-
 var results = {};
 
 var vm = function() {
   return new Vue({
     el: '#testbench',
     data: {
-      message: 'Hello Vue.js!'
+      message: 'Hello Vue.js!',
+      val: 0
     },
     beforeCreate: function() {
       //console.log("before created!")
@@ -32,31 +32,31 @@ var vm = function() {
       t2 = performance.now()
     },
     beforeUpdate: function() {
-      ////consolelog("before updated!")
+      console.log("before updated!")
+      t1 = performance.now()
     },
     updated: function() {
-      ////consolelog("updated!")
+      console.log("updated!")
+      t3 = performance.now()
     },
     beforeDestroy: function() {
-      //consolelog("before destroyed!")
+      //console.log("before destroyed!")
     },
     destroyed: function() {
-      //consolelog("destroyed!")
+      //console.log("destroyed!")
       t1 = performance.now()
     },
     activated: function() {
-      //consolelog("activated!")
+      //console.log("activated!")
     },
     deactivated: function() {
-      //consolelog("deactivated!")
+      //console.log("deactivated!")
     },
   });
 }
 
 // render and destroy test
 var testA = function(callback) {
-  // var v = vm();
-
   for(var i = 0; i < 1000; i++) {
     t0 = performance.now()
     let v = vm();
@@ -67,8 +67,7 @@ var testA = function(callback) {
     v.$destroy();
     timing.dest += t1 - t0
   }
-  
-  //consolelog("boo")
+
   results = {};
   results.test = "Vue Lifecycle Test A"
   results.render = timing.rend/1000
@@ -79,13 +78,22 @@ var testA = function(callback) {
 
 // updating test
 var testB = function(callback) {
+  t0 = t1 = t2 = t3 = 0
   results = {};
   results.test = "Vue Lifecycle Test B"
-  results.update = timing.update
-  callback(results)
+  let v = vm();
+  t0 = performance.now()
+  Vue.set(v, 'val', 10)
+  v.$forceUpdate();
+
+  // ONLY DOES ONE UPDATE, CHANGE TO 1000
+  Vue.nextTick().then(function() {
+    timing.update = t3 - t0
+    results.update = timing.update
+    callback(results)
+  })
 }
 
 window.UUT.testA = testA;
 window.UUT.testB = testB;
 window.UUT.vm = vm();
-//consolelog(window.UUT)

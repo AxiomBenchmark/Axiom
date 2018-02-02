@@ -114,3 +114,26 @@ span {
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
   }
+
+form {
+display: flex; /* 2. display flex to the rescue */
+flex-direction: row;
+}
+
+label, input {
+display: block; /* 1. oh noes, my inputs are styled as block... */
+}
+
+#searchField {
+    width: 80%;
+    height: 54px;
+}
+
+#searchButton {
+    width: 20%;
+    color: white;
+    background: #ff5d55;
+    border: 0;
+    height: 54px;
+    text-decoration: none;
+}

@@ -1,27 +1,60 @@
 <html>
     <head>
-        <title>Test</title>
-        <link rel="stylesheet" href="/stylesheets/styles.css">
-        <link rel="stylesheet" href="/stylesheets/navigation.css">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Axiom Results</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            span {
-                overflow-wrap: normal;
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
             }
         </style>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/stylesheets/main.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        
     </head>
     <body>
-        <%if (typeof error != 'undefined') {%>
+        <% if (report) {%>
             <script>
-                //wrapped in setTimeout to let the page finish rendering.
-                setTimeout(function() { alert('<%=error%>') }, 1);
+                var rep = '<%= report %>'
+                // console.log(JSON.parse(rep))      
             </script>
-        <% } else if (typeof report != 'undefined') {%>
-        <div><%=report%></div>
-        <% } else { %>
+        <!-- <%} else {%>
             <script>
-                //wrapped in setTimeout to let the page finish rendering.
-                setTimeout(function() { alert('no error or report defined.') }, 1);
+                alert(report.error)
             </script>
-        <% } %>
+        <%} %> -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class='col-2 sidebar'>
+                    <div id="method">
+                        <h1> Axiom </h1>
+                        <div class="btn-group">
+                            <button onclick="fwClick(value)" value="React" class="btn" type="button"> React </button>
+                            <button onclick="fwClick(value)" value="Vue" class="btn" type="button"> Vue </button>
+                            <button onclick="fwClick(value)" value="Polymer" class="btn" type="button"> Polymer</button>
+                            <button onclick="fwClick(value)" value="Angular" class="btn" type="button"> Angular</button>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-7'>
+                    <canvas id="myChart" height="400" width="400"></canvas>
+                </div>
+                <div class='col-2'>
+                    <p style="color:white;"> some stuff over here</p>
+                </div>
+            </div>
+        </div>
+        
+        <script src="/javascript/dummy.js"></script>
+        <script src="/javascript/index.js"></script>
+        <script src="/javascript/chart.js"></script>
     </body>
 </html>

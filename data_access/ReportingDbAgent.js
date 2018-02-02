@@ -85,15 +85,16 @@ class ReportingDbAgent {
         if (!report.frameworks[element.frameworkname]) {
           report.frameworks[element.frameworkname] = {};
         }
-        if (!report.frameworks[element.frameworkname]['results']) {
-          report.frameworks[element.frameworkname]['results'] = {};
+        if (!report.frameworks[element.frameworkname]["results"]) {
+          report.frameworks[element.frameworkname]["results"] = {};
         }
-        if (!report.frameworks[element.frameworkname]['results'][element.testdesc]) {
-          report.frameworks[element.frameworkname]['results'][element.testdesc] = {};
+        if (!report.frameworks[element.frameworkname]["results"][element.testdesc]) {
+          report.frameworks[element.frameworkname]["results"][element.testdesc] = {};
         }
-        report.frameworks[element.frameworkname]['results'][element.testdesc][element.description] = element.floatresult;
-        report.frameworks[element.frameworkname]['version'] = element.frameworkversion;
+        report.frameworks[element.frameworkname]["results"][element.testdesc][element.description] = element.floatresult;
+        report.frameworks[element.frameworkname]["version"] = element.frameworkversion;
       });
+
       callback(null, report);
     });
   }

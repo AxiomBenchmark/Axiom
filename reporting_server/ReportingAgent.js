@@ -18,11 +18,12 @@ const ReportingAgent = function(query, callback) {
     if (query.benchmark) {
         ResultDbAgent.getBenchmarkResults(query.benchmark, (err, res) => {
             if (err) {
-                callback({'error' : err});
+                callback(err, null);
                 return;
             }
             else {
-                callback({'report' : JSON.stringify(res)});
+                // res.type = "benchmark";
+                callback(null, {'report' : JSON.stringify(res)});
             }
         })
         return;

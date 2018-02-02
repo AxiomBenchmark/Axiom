@@ -6,12 +6,12 @@
         "testapp_script" : "react.js",
         "tests" : [
             {
-                "name" : "Lifecycle Test A",
-                "function" : "lifecycleTestA"
+                "name" : "Lifecycle Test",
+                "function" : "lifecycleTest"
             },
             {
-                "name" : "create Rows Test",
-                "function" : "testRows"
+                "name" : "Rows Test",
+                "function" : "rowsTest"
             }
 
         ]
@@ -26,6 +26,10 @@
             {
                 "name" : "Lifecycle Test A",
                 "function" : "testA"
+            },
+            {
+                "name" : "Lifecycle Test B",
+                "function" : "testB"
             }
         ]
     }

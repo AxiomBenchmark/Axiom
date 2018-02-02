@@ -102,18 +102,18 @@ socket.on('test_request', (params) => {
 
 socket.on('benchmark_done', function(params) {
     log('benchmark complete. Result id: ' + params.id);
-    console.log(params.tempresults)
-    // console.log(JSON.parse(params.tempresults))
-    // $('#testbench').html("<p>"+JSON.stringify(params.tempresults) + "</p>");
-    $('#testbench').empty();
-    $('#testbench').append(params.tempresults.map(function(cv){
-        // return "<div>" + Object.entries(cv).forEach(function(key, value) {return "<span>" + JSON.stringify(key) + ": " + JSON.stringify(value) + "</span>"}+ "</div>");
-        return "<div>" + Object.entries(cv).map(function(p) {
-            return "<p>" + p[0] + ": " + p[1] + "</p>"
-        }) + "</div>"
-    } ))
+    window.location.href = window.location.origin + '/report?benchmark=' + params.id;
 });
 
 socket.on('benchmark_progress', (params) => {
-    $('#progressBar').val(params.percent);
+    var i = setInterval(function(p) {
+        let progress = $('#progressBar').val();
+        if(progress < p) {
+            $('#progressBar').val(progress + 2)
+        }
+
+        if (progress == 100) {
+          clearInterval(i);
+        }
+      }, 10, params.percent);
 });
