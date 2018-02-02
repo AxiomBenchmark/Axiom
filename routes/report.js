@@ -20,9 +20,7 @@ var report_routes = function(http) {
           //       break;
           //   }
           // }
-          const output = {'error' : err, 'report' : report}
-          res.render('benchmark/report', output);
-          res.end();
+          res.render('benchmark/report', report);
         });
   });
 

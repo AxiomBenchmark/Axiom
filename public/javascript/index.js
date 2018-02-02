@@ -1,5 +1,4 @@
-var report = JSON.parse(rep.replace(/&#34;/g, '"'))
-// console.log(report)
+var report = JSON.parse(rep);
 
 function getFrameworkData(json, framework) {
     let data = []

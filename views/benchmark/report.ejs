@@ -23,8 +23,7 @@
     <body>
         <% if (report) {%>
             <script>
-                var rep = '<%= report %>'
-                // console.log(JSON.parse(rep))      
+                var rep = <%- JSON.stringify(report) %>
             </script>
         <!-- <%} else {%>
             <script>
