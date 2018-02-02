@@ -115,14 +115,7 @@ span {
                                     supported by Chrome and Opera */
   }
 
-form {
-display: flex; /* 2. display flex to the rescue */
-flex-direction: row;
-}
 
-label, input {
-display: block; /* 1. oh noes, my inputs are styled as block... */
-}
 
 #searchField {
     width: 80%;
