@@ -1,34 +1,43 @@
-const { CronJob } = require('cron');
-const { Pool } = require('pg');
-var pool = Pool();
+const CronJob = require('cron').CronJob;
+const Pool = require('pg').Pool;
+const pool = Pool();
+const TIMEZONE = process.env.TIMEZONE || 'America/Los_Angeles';
 
-const DeleteUnfinishedResultsSQL = "DELETE FROM benchmarkframeworktestresults bftr \
-                                    WHERE bftr.testid IN (\
-                                            SELECT bft.testid FROM benchmarkframeworktests bft\
-                                            WHERE bft.frameworkid IN (\
-                                                    SELECT bf.frameworkid\
-                                                    FROM benchmarkframeworks bf \
-                                                    WHERE bf.benchmarkid\
-                                                    IN (\
-                                                            SELECT b.benchmarkid \
-                                                            FROM benchmarks b \
-                                                            WHERE NOT b.iscomplete)));";
-const DeleteUnfinishedTestsSQL = "DELETE FROM benchmarkframeworktests bft\
-                                WHERE bft.frameworkid IN (\
-                                        SELECT bf.frameworkid\
-                                        FROM benchmarkframeworks bf \
-                                        WHERE bf.benchmarkid IN (\
-                                                SELECT b.benchmarkid \
-                                                FROM benchmarks b \
-                                                WHERE NOT b.iscomplete));"
-const DeleteUnfinishedFrameworksSQL = "DELETE FROM benchmarkframeworks bf \
-                                        WHERE bf.benchmarkid IN (\
-                                                SELECT b.benchmarkid \
-                                                FROM benchmarks b \
-                                                WHERE NOT b.iscomplete);"
+const DeleteUnfinishedResultsSQL = 
+    "DELETE FROM benchmarkframeworktestresults bftr \
+    WHERE bftr.testid IN ( \
+        SELECT bft.testid \
+        FROM benchmarkframeworktests bft \
+        WHERE bft.frameworkid IN ( \
+            SELECT bf.frameworkid \
+            FROM benchmarkframeworks bf \
+            WHERE bf.benchmarkid IN ( \
+                SELECT b.benchmarkid \
+                FROM benchmarks b \
+                WHERE NOT b.iscomplete)));";
+
+const DeleteUnfinishedTestsSQL = 
+    "DELETE FROM benchmarkframeworktests bft \
+    WHERE bft.frameworkid IN ( \
+        SELECT bf.frameworkid \
+        FROM benchmarkframeworks bf \
+        WHERE bf.benchmarkid IN ( \
+                SELECT b.benchmarkid \
+                FROM benchmarks b \
+                WHERE NOT b.iscomplete));"
+
+const DeleteUnfinishedFrameworksSQL =
+    "DELETE FROM benchmarkframeworks bf \
+    WHERE bf.benchmarkid IN ( \
+        SELECT b.benchmarkid \
+        FROM benchmarks b \
+        WHERE NOT b.iscomplete);"
+
 const DeleteUnfinishedBenchmarksSQL = "DELETE FROM benchmarks b WHERE NOT b.iscomplete;"
 
-//Every Sunday at Midnight, delete unfinished benchmarks
+/*
+Every Sunday at Midnight, delete unfinished benchmarks.
+*/
 new CronJob('12 0 * * 7', function() {
     console.log('clearing DB of unfinished benchmarks...');
     pool.query(DeleteUnfinishedResultsSQL).then(function() {
@@ -40,4 +49,6 @@ new CronJob('12 0 * * 7', function() {
             });
         });
     });
-}, null, true, 'America/Los_Angeles');
+}, null, true, TIMEZONE);
+
+console.log("ReportingJobs scheduled in the " + TIMEZONE + " timezone.");

@@ -2,29 +2,53 @@ const http = require('http');
 const TestLibrary = require('../TestProfiles.json');
 const ResultDbAgent = require('../data_access/ResultDbAgent');
 
-const truncate = function(num, places) {
-    return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
-  }
+const DECIMAL_PLACES = 7
 
-class TestAgent {
+/*
+Rounds floating point results to the defined number of decimal places.
+*/
+const roundFloat = function(num) {
+    return Math.trunc(num * Math.pow(10, DECIMAL_PLACES)) / Math.pow(10, DECIMAL_PLACES);
+}
+
+/*
+Handles the benchmark execution for a single client.
+Specifically in charge of loading and executing tests and collecting test results.
+See the BenchmarkAgent documentation in GitHub for more details about its functionality.
+*/
+class BenchmarkAgent {
+
+    /*
+    Constructor. Requires the socket to communicate with the target client,
+    and the complete(results) callback when complete.
+    */
     constructor(socket, completion) {
+        // track what framework / test is currently being run
         this.frameworkIndex = -1;
         this.testIndex = -1;
+
+        // track how many tests are complete for progress updates
         this.testsComplete = 0;
+
+        // store socket, completion handler
         this.socket = socket;
         this.completion = completion;
         this.results = [];
 
-        //setup socket listeners
+        // setup socket listeners
         this.socket.on('benchmark_request', this.onBenchmarkRequest.bind(this));
         this.socket.on('framework_ready', this.onFrameworkReady.bind(this));
         this.socket.on('test_result', this.onTestResult.bind(this));
     }
 
-    //store the benchmark session in the database
+    /*
+    Creates a new benchmark object in the database.
+    Requires the userAgent provided by the client's browser, and the completion callback.
+    */
     createBenchmark(userAgent, callback) {
         // interpret the user agent string sent by client for benchmark metadata.
-        const url = "http://useragentapi.com/api/v4/json/" + process.env.USERAGENT_APIKEY + "/" + encodeURIComponent(userAgent);
+        const url = "http://useragentapi.com/api/v4/json/" + process.env.USERAGENT_APIKEY + "/" + 
+            encodeURIComponent(userAgent);
         http.get(url, (res) => {
             let rawData = '';
             res.on('data', (chunk) => { rawData += chunk; });
@@ -33,7 +57,8 @@ class TestAgent {
                 // once user agent api is done, save benchmark
                 const data = JSON.parse(rawData).data;
                 ResultDbAgent.newBenchmark(data.os_name, data.os_version, data.browser_name,
-                    data.browser_version, data.ua_type, data.engine_name, data.engine_version, (id) => {
+                    data.browser_version, data.ua_type, data.engine_name, data.engine_version, 
+                    (id) => {
                         // set id and continue
                         this.id = id;
                         callback();
@@ -45,7 +70,10 @@ class TestAgent {
         })
     }
 
-    // when the client requests a benchmark test
+    /*
+    Triggered when the client requests the benchmark to begin.
+    Requires the frameworks for the benchmark to run.
+    */
     onBenchmarkRequest(params) {
         // add each framework that is turned on to the to-do list
         this.frameworks = [];
@@ -68,18 +96,23 @@ class TestAgent {
         }
     }
 
-    // when the client reports that the current framework is ready
+    /*
+    Triggered when the client reports that the framework is loaded and ready
+    for testing.
+    */
     onFrameworkReady() {
         this.nextTest();
     }
 
-    // when the client sends the results of a test
+    /*
+    Triggered when the client sends the results of a test
+    */
     onTestResult(result) {
         this.results = this.results.concat(result);
         ResultDbAgent.newTest(this.frameworkid, result.test, (testid) => {
             delete result.test;
             for (var i in result) {
-                ResultDbAgent.newResult(testid, i, truncate(result[i], 7));
+                ResultDbAgent.newResult(testid, i, roundFloat(result[i], 7));
             }
             this.testsComplete++;
             this.sendProgress();
@@ -87,7 +120,9 @@ class TestAgent {
         });
     }
 
-    // request setup for the next framework
+    /*
+    Loads the next framework on the client.
+    */
     loadNextFramework() {
         this.frameworkIndex++;
         var framework = this.frameworks[this.frameworkIndex];
@@ -114,7 +149,9 @@ class TestAgent {
         }
     }
 
-    // request next test
+    /*
+    Requests the client to run the next test.
+    */
     nextTest() {
         this.testIndex++;
         var test = this.frameworks[this.frameworkIndex].tests[this.testIndex];
@@ -127,7 +164,9 @@ class TestAgent {
         }
     }
 
-    // send client a percent complete update
+    /*
+    Sends the client the progress of the benchmark.
+    */
     sendProgress() {
         // compute number of tests if not done so already
         if (!this.testCount) {
@@ -143,8 +182,9 @@ class TestAgent {
         this.socket.emit('benchmark_progress', {'percent' : percentage});
     }
 
-    // tell client that benchmark is done.
-    // TODO: send result id to client
+    /*
+    Inform the client that the benchmark is complete
+    */
     done() {
         var data = {
             'id' : this.id,
@@ -155,4 +195,4 @@ class TestAgent {
     }
 }
 
-module.exports = TestAgent;
+module.exports = BenchmarkAgent;

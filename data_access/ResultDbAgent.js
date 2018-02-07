@@ -1,31 +1,38 @@
-const { Pool } = require('pg');
+const pool = new require('pg').Pool();
 const BenchmarkIdGenerator = require('./BenchmarkIdGenerator');
 
-// connection pool to handle lots of requests.
-const pool = new Pool();
+const verifyUniqueIdSQL = "SELECT COUNT(*) FROM benchmarks WHERE benchmarkid = $1";
 
-// BENCHMARK SQL STATEMENTS
-const verifyUniqueIdSQL = 
-  "SELECT COUNT(*) FROM benchmarks WHERE benchmarkid = $1";
-const newBenchmarkSQL = 
-  "INSERT INTO benchmarks (benchmarkid, operatingsystem, operatingsystemversion, browser, browserversion, hardwaretype, engine, engineversion)\
-   VALUES ($1, $2, $3, $4, $5, $6, $7, $8);";
-const newFrameworkSQL =
-  "INSERT INTO benchmarkframeworks (benchmarkid, frameworkname, frameworkversion)\
-   VALUES ($1, $2, $3) RETURNING frameworkid;"
+const newBenchmarkSQL =  
+  "INSERT INTO benchmarks (benchmarkid, operatingsystem, operatingsystemversion, browser, \
+    browserversion, hardwaretype, engine, engineversion) \
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8);";
+
+const newFrameworkSQL = 
+  "INSERT INTO benchmarkframeworks (benchmarkid, frameworkname, frameworkversion) \
+  VALUES ($1, $2, $3) \
+  RETURNING frameworkid;"
+
 const newTestSQL = 
-  "INSERT INTO benchmarkframeworktests (frameworkid, description)\
+  "INSERT INTO benchmarkframeworktests (frameworkid, description) \
    VALUES ($1, $2) RETURNING testid;"
+
 const newResultSQL = 
-  "INSERT INTO benchmarkframeworktestresults (testid, description, floatresult)\
+  "INSERT INTO benchmarkframeworktestresults (testid, description, floatresult) \
    VALUES ($1, $2, $3);"
+
 const completeBenchmarkSQL =
   "UPDATE benchmarks SET iscomplete = TRUE WHERE benchmarkid = $1 ;"
 
+/*
+Allows access to database to provide result ingestion.
+Uses a connection pool to handle high volume.
+*/
 class ResultDbAgent {
-
-  // generate a unique id.
-  // in the 1 in ~17 billion chance of a collision, recalculate.
+  /*
+  Generates a unique Benchmark Id in the form of AAA-###-AAA. In the 1 in ~17 billion chance of a 
+  collision, recalculate.
+  */
   generateUniqueId(callback) {
     const id = BenchmarkIdGenerator();
     this.verifyUniqueId(id, (unique) => {
@@ -38,7 +45,9 @@ class ResultDbAgent {
     });
   }
 
-  // verify that the id is not in use.
+  /*
+  Verifies that the provided Id is not already in use. Requires a callback(isUnique) function.
+  */
   verifyUniqueId(id, callback) {
     const res = pool.query(verifyUniqueIdSQL, [id], (err, res) => {
       if (err) {
@@ -50,7 +59,10 @@ class ResultDbAgent {
     });
   }
 
-  // add a new benchmark.
+  /*
+  Adds a new benchmark into the database. Requries all the user info provided by their UserAgent,
+  and a callback(id) function.
+  */
   newBenchmark(os, osv, browser, browserv, hardwaretype, engine, enginev, callback) {
     const id = this.generateUniqueId((id) => {
       const values = [id, os, osv, browser, browserv, hardwaretype, engine, enginev];
@@ -60,7 +72,10 @@ class ResultDbAgent {
     });
   }
 
-  // add a new framework to a benchmark.
+  /*
+  Adds a new framework to an existing benchmark. Requires the benchmark id to add the result to, 
+  the framework name and version, and a callback(frameworkid) function.
+  */
   newFramework(benchmarkid, fwname, fwversion, callback) {
     const values = [benchmarkid, fwname, fwversion];
     pool.query(newFrameworkSQL, values).then(res => {
@@ -68,7 +83,10 @@ class ResultDbAgent {
     });
   }
 
-  // add a new framework to a benchmark.
+  /*
+  Adds a new test to an existing framework being tested. Requires the framework id provided by 
+  newFrameWork() above, the test description, and a callback(testid) function.
+  */
   newTest(frameworkid, description, callback) {
     console.log('newTest');
     const values = [frameworkid, description];
@@ -77,13 +95,20 @@ class ResultDbAgent {
     });
   }
 
-  // add a new result to a framework
+  /*
+  Adds a result to an existing test being tested. Requires the test id provided by newTest() above,
+  description of what the test tested, and the actual result of the test. Currently only numeric
+  results are accepted.
+  */
   newResult(testid, description, result) {
     const values = [testid, description, result];
     pool.query(newResultSQL, values);
   }
 
-  // make the benchmark as complete
+  /*
+  Marks the given benchmark id as complete in the database. This validates the benchmark results
+  and results in permanent storage. 
+  */
   completeBenchmark(id) {
     pool.query(completeBenchmarkSQL, [id]);
   }

@@ -1,4 +1,4 @@
-//load postgres credentials
+// load postgres credentials
 require('dotenv').config();
 
 let express = require('express');
@@ -24,16 +24,16 @@ app.use(express.static('./public'));
 
 // create benchmark server and bind to /benchmark
 var http = require('http').Server(app);
-var testAgentManager = require('./benchmark_server/TestAgentManager.js');
+var testAgentManager = require('./benchmark_server/BenchmarkAgentManager.js');
 testAgentManager = new testAgentManager(http);
 var bench = require('./routes/benchmark')(http);
 app.use('/benchmark', bench);
 
-//create report endpoint and bind
+// create report endpoint and bind
 var bench = require('./routes/report')(http);
 app.use('/report', bench);
 
-//start reporting cron jobs
+// start reporting cron jobs
 require('./data_access/ReportingJobs');
 
 // catch 404 and forward to error handler
@@ -62,10 +62,3 @@ app.use(function(err, req, res, next) {
 var port = process.env.PORT || 3000;
 console.log('server listening on port ' + port + '...');
 http.listen(port);
-
-//test sql server connection
-if (process.env.SQL_DEBUG) {
-  console.log('note: sql stuff is done at the end of app.js for testing purposes.')
-  require('./data_access/ReportingDbAgent');
-  require('./data_access/ResultDbAgent');
-}
