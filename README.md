@@ -30,7 +30,7 @@ All code must follow the [code quality guidelines](CODE_QUALITY_GUIDELINES.md)
 
 ### Creating a new test
 Please follow the template in 
-[template.js](template.js)
+<!---[template.js](template.js)--->
 
 ### Pull requests
 Make all pull requests to the develop branch of the repository. 
