@@ -58,6 +58,14 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// redirecting using HTTPS
+app.get('*',function(req,res,next){
+  if(req.headers['x-forwarded-proto']!='https')
+    res.redirect('https://axiom-benchmark.herokuapp.com'+req.url)
+  else
+    next()
+})
+
 // start server
 var port = process.env.PORT || 3000;
 console.log('server listening on port ' + port + '...');

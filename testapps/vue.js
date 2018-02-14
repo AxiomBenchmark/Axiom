@@ -2,11 +2,16 @@ var Vue = require('vue');
 
 var t0 = 0, t1 = 0, t2 = 0, t3 = 0;
 
+var Child = Vue.extend({
+    template: '<div>"I am a child!"</div>'
+});
+
 var timing = {
   rend: 0,
   dest: 0,
   mount: 0,
-  update: 0
+  update: 0,
+  createChild: 0
 };
 var results = {};
 
@@ -15,7 +20,11 @@ var vm = function() {
     el: '#testbench',
     data: {
       message: 'Hello Vue.js!',
-      val: 0
+      val: 0,
+      children: []
+    },
+    addChild: function() {
+      this.children.push(new Child());
     },
     beforeCreate: function() {
       //console.log("before created!")
@@ -94,6 +103,25 @@ var testB = function(callback) {
   })
 }
 
+var testC = function(callback) {
+  t0 = t1 = 0
+  results = {};
+  results.test = "Vue Child Lifecycle Test"
+  let v = vm();
+  for (let i = 0; i < 1000; i++){
+    t0 = performance.now()
+    v.children.push(new Child());
+    v.$forceUpdate();
+    Vue.nextTick().then(function(){
+      t1 = performance.now()
+      timing.createChild += t1 - t0
+    })
+  }
+  results.createChild = timing.createChild / 1000
+  callback(results)
+}
+
 window.UUT.testA = testA;
 window.UUT.testB = testB;
+window.UUT.testC = testC;
 window.UUT.vm = vm();

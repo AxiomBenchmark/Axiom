@@ -30,6 +30,10 @@
             {
                 "name" : "Lifecycle Test B",
                 "function" : "testB"
+            },
+            {
+                "name" : "Child Lifecycle Test",
+                "function" : "testC"
             }
         ]
     }
