@@ -7,6 +7,7 @@ let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+let redirectToHTTPS = require('express-http-to-https').redirectToHTTPS
 
 // create main express app
 let app = express();
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('./public'));
+app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/]))
 
 // create benchmark server and bind to /benchmark
 var http = require('http').Server(app);
