@@ -89,7 +89,7 @@ class Rows extends Component {
     }
 
     render() {
-        let rows = this.state.data.map((d, i) => {
+        let rows = this.state.data.map(function (d, i) {
             return <Row key={d.id} data={d}></Row>
         });
         return (<div className="container" id="textTable">

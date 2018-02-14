@@ -49,16 +49,16 @@ class BenchmarkAgent {
         // interpret the user agent string sent by client for benchmark metadata.
         const url = "http://useragentapi.com/api/v4/json/" + process.env.USERAGENT_APIKEY + "/" + 
             encodeURIComponent(userAgent);
-        http.get(url, (res) => {
+        http.get(url, function (res) {
             let rawData = '';
-            res.on('data', (chunk) => { rawData += chunk; });
-            res.on('end', () => {
+            res.on('data', function (chunk) { rawData += chunk; });
+            res.on('end', function() {
               try {
                 // once user agent api is done, save benchmark
                 const data = JSON.parse(rawData).data;
                 ResultDbAgent.newBenchmark(data.os_name, data.os_version, data.browser_name,
                     data.browser_version, data.ua_type, data.engine_name, data.engine_version, 
-                    (id) => {
+                    function (id) {
                         // set id and continue
                         this.id = id;
                         callback();
@@ -85,8 +85,8 @@ class BenchmarkAgent {
         }.bind(this));
 
         if (this.frameworks.length) {
-            ResultDbAgent.generateUniqueId((id) => {
-                this.createBenchmark(params.userAgent, () => {
+            ResultDbAgent.generateUniqueId(function(id) {
+                this.createBenchmark(params.userAgent, function() {
                     // start testing
                     this.loadNextFramework();
                 });
@@ -109,7 +109,7 @@ class BenchmarkAgent {
     */
     onTestResult(result) {
         this.results = this.results.concat(result);
-        ResultDbAgent.newTest(this.frameworkid, result.test, (testid) => {
+        ResultDbAgent.newTest(this.frameworkid, result.test, function(testid) {
             delete result.test;
             for (var i in result) {
                 ResultDbAgent.newResult(testid, i, roundFloat(result[i], 7));
@@ -127,7 +127,7 @@ class BenchmarkAgent {
         this.frameworkIndex++;
         var framework = this.frameworks[this.frameworkIndex];
         if (framework) {
-            ResultDbAgent.newFramework(this.id, framework.framework, framework.version, (id) => {
+            ResultDbAgent.newFramework(this.id, framework.framework, framework.version, function (id) {
                 this.frameworkid = id;
             
                 var params = {};
@@ -171,8 +171,8 @@ class BenchmarkAgent {
         // compute number of tests if not done so already
         if (!this.testCount) {
             this.testCount = 0;
-            this.frameworks.forEach(framework => {
-                framework.tests.forEach(test => {
+            this.frameworks.forEach(function (framework) {
+                framework.tests.forEach(function (test) {
                     this.testCount++;
                 });
             });

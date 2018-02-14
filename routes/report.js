@@ -6,7 +6,7 @@ var report_routes = function(http) {
 
   //page to configure tests
   router.get('/', function(req, res) {
-        ReportingAgent(req.query, (err, report) => {
+        ReportingAgent(req.query, function(err, report) {
           if (err)
           {
             console.log(err)

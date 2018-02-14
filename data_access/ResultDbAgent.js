@@ -35,7 +35,7 @@ class ResultDbAgent {
   */
   generateUniqueId(callback) {
     const id = BenchmarkIdGenerator();
-    this.verifyUniqueId(id, (unique) => {
+    this.verifyUniqueId(id, function(unique) {
       if (!unique) {
         this.generateUniqueId(callback);
       }
@@ -49,7 +49,7 @@ class ResultDbAgent {
   Verifies that the provided Id is not already in use. Requires a callback(isUnique) function.
   */
   verifyUniqueId(id, callback) {
-    const res = pool.query(verifyUniqueIdSQL, [id], (err, res) => {
+    const res = pool.query(verifyUniqueIdSQL, [id], function(err, res) {
       if (err) {
         console.log(err);
         callback(false);
@@ -64,9 +64,9 @@ class ResultDbAgent {
   and a callback(id) function.
   */
   newBenchmark(os, osv, browser, browserv, hardwaretype, engine, enginev, callback) {
-    const id = this.generateUniqueId((id) => {
+    const id = this.generateUniqueId(function(id) {
       const values = [id, os, osv, browser, browserv, hardwaretype, engine, enginev];
-      pool.query(newBenchmarkSQL, values).then(res => {
+      pool.query(newBenchmarkSQL, values).then(function(res) {
         callback(id);
       });
     });
@@ -78,7 +78,7 @@ class ResultDbAgent {
   */
   newFramework(benchmarkid, fwname, fwversion, callback) {
     const values = [benchmarkid, fwname, fwversion];
-    pool.query(newFrameworkSQL, values).then(res => {
+    pool.query(newFrameworkSQL, values).then(function(res) {
       callback(res.rows[0].frameworkid);
     });
   }
@@ -90,7 +90,7 @@ class ResultDbAgent {
   newTest(frameworkid, description, callback) {
     console.log('newTest');
     const values = [frameworkid, description];
-    pool.query(newTestSQL, values).then(res => {
+    pool.query(newTestSQL, values).then(function(res) {
       callback(res.rows[0].testid);
     });
   }

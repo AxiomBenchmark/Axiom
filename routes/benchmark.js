@@ -3,7 +3,7 @@ const TestLibrary = require('../TestProfiles.json');
 
 // build options for configuration page
 var options = [];
-TestLibrary.forEach(element => {
+TestLibrary.forEach(function(element) {
   var ele = {
     'name' : element.framework,
     'id' : element.id

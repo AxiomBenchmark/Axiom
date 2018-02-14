@@ -16,7 +16,7 @@ const ReportingAgent = function(query, callback) {
     }
 
     if (query.benchmark) {
-        ResultDbAgent.getBenchmarkResults(query.benchmark, (err, res) => {
+        ResultDbAgent.getBenchmarkResults(query.benchmark, function(err, res) {
             if (err) {
                 callback(err, null);
                 return;

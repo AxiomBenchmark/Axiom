@@ -45,7 +45,7 @@ class ReportingDbAgent {
   getTestMIN_AVG_MAX_COUNT(framework, test, func, callback) {
     var queryString = averageTestResultSQL.format(func.toUpperCase());
     const values = [framework, test];
-    pool.query(queryString, values, (err, res) => {
+    pool.query(queryString, values, function (err, res) {
       //if sql error
       if (err) {
         callback(err, null);
@@ -53,7 +53,7 @@ class ReportingDbAgent {
       }
 
       var report = {};
-      res.rows.forEach(element => {
+      res.rows.forEach(function(element) {
         report[element.description] = element[func.toLowerCase()];
       });
       callback(null, report);
@@ -65,7 +65,7 @@ class ReportingDbAgent {
   and the callback(result) function.
   */
   getBenchmarkResults(id, callback) {
-    pool.query(benchmarkResultSQL, [id], (err, res) => {
+    pool.query(benchmarkResultSQL, [id], function (err, res) {
       // if sql error
       if (err) {
         console.log(err);
@@ -89,7 +89,7 @@ class ReportingDbAgent {
       report.browserversion =res.rows[0].browserversion;
       report.hardwaretype = res.rows[0].hardwaretype;
       report.frameworks = {};
-      res.rows.forEach(element => {
+      res.rows.forEach(function(element) {
         // if statements are required to place empty objects to populate.
         // hideous, but works for now.
         if (!report.frameworks[element.frameworkname]) {
