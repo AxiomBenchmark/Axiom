@@ -1,7 +1,7 @@
-# Axiom
+#Axiom
 Axiom is a tool designed to test the timing of JavaScript Frameworks across devices
 
-## Getting Started
+##Getting Started
 ### Prerequisites
 + Nodejs
 + npm package manager
@@ -29,7 +29,8 @@ For issue tracking, we are using GitHub issues. Before posting a new bug, please
 All code must follow the [code quality guidelines](CODE_QUALITY_GUIDELINES.md)
 
 ### Creating a new test
-Please follow the template in template.js
+Please follow the template in 
+[template](template.js)
 
 ### Pull requests
 Make all pull requests to the develop branch of the repository. 
