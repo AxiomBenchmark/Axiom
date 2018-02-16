@@ -82,6 +82,7 @@ class ReportingDbAgent {
 
       // build the json result
       var report = {};
+      report.id = id;
       report.timestamp = res.rows[0].timestamp;
       report.operatingsystem = res.rows[0].operatingsystem;
       report.operatingsystemversion = res.rows[0].operatingsystemversion;
