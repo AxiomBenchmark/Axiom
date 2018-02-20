@@ -1,5 +1,5 @@
 const pool = new require('pg').Pool();
-const BenchmarkIdGenerator = require('./BenchmarkIdGenerator');
+const BenchmarkIdGenerator = require('./BenchmarkIdGenerator').generate;
 
 const verifyUniqueIdSQL = "SELECT COUNT(*) FROM benchmarks WHERE benchmarkid = $1";
 
