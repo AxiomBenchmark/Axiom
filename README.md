@@ -16,7 +16,7 @@ To run Axiom locally, make sure that all the npm packages are installed. Then ru
 ```
 npm start
 ```
-Then navagate to https://localhost:3000
+Then navigate to https://localhost:3000
 
 ## Contributing
 Please be respectful of others. 
