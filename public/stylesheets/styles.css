@@ -9,7 +9,9 @@ body {
 a:link {
    text-decoration:  none;
 }
-
+a:hover {
+    text-decoration: none;
+}
 h1 {
     color: #FF5D55;
     display: block;
@@ -115,13 +117,37 @@ span {
                                     supported by Chrome and Opera */
   }
 
-
-
-#searchField {
-    width: 80%;
-    height: 54px;
+#benchmarkSearch {
+    background-color: #ff5d55;
+    border-width: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    display: block;
+    margin: 2em auto !important;
+    min-width: 200px;
+    transition: background-color .3s;
+    width: 25%;
+    text-align: center;
+    color:white;
+    font-family: 'Abel', sans-serif;
+    font-size: 1.5em;
 }
 
+#searchField {
+    width: 100%;
+    height: 54px;
+    color:#415274
+}
+#optionalReport {
+    transition: background-color .3s;
+    cursor:pointer;
+}
+#optionalReport:focus, #optionalReport:hover {
+    background-color: #e5534c;
+    color:#415274;
+}
+#optionalText {
+    color:inherit;
+}
 #searchButton {
     width: 20%;
     color: white;
@@ -129,4 +155,9 @@ span {
     border: 0;
     height: 54px;
     text-decoration: none;
+    transition: background-color .3s;
+}
+#searchButton:hover {
+    background-color:#e5534c;
+    color:#364554;
 }

@@ -18,28 +18,37 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="/javascript/keyboard_navigation.js"></script>
+            <script src="/javascript/home.js"></script>
     </head>
     <body>
         <div id="home" class="container">
         <h1>Axiom</h1>
         <h2 class="home">A streaming thing for people who make things that stream</h2>
-        <a class="rect-btn"  data-x="0" data-y="0" href="benchmark/configure">Run Benchmark</a>
-        <a class="rect-btn" style="padding: 0px">
-            <form action="report" style="margin: 0px">
+        <a class="rect-btn" data-x="0" data-y="0" href="benchmark/configure">Run Benchmark</a>
+        <form class="row" action="report" style="margin: 0px;" id="benchmarkSearch">
+            <div style="display:flex;">
                 <input id="searchField" data-x="0" data-y="1" type="text" name="benchmark">
-                <input id="searchButton" data-x="1" data-y="1" type="submit" value=">">
-            </form>
-        </a>
-        <a class="rect-btn"  data-x="0" data-y="2" href="about.html">What is this?</a>
+                <input id="searchButton"data-x="1" data-y="1" type="submit" value=">">
+            </div>
+            
+            <div id="optionalReport" data-x="0" data-y="2" onclick="displayField()" style="padding:0px;">
+                <a id="optionalText">Compare two benchmarks</a>
+                <div id="report2" style="margin:0px;display:none;">
+                    <input id="searchField"  type="text2" name="benchmark2">
+                </div>
+            </div>
+            
+        </form>
+        <a class="rect-btn"  data-x="0" data-y="3" href="about.html">What is this?</a>
         <div class="row">
             <div class="col-sm-6">
                 <a class="icons" href="about2.html">
-                    <i class="fa fa-question-circle" data-x="0" data-y="3" aria-hidden="true"></i>
+                    <i class="fa fa-question-circle" data-x="0" data-y="4" aria-hidden="true"></i>
                 </a>
             </div>
             <div class="col-sm-6">
                 <a class="icons" href="https://github.com/AxiomBenchmark/Axiom">
-                    <i class="fa fa-github" data-x="1" data-y="3" aria-hidden="true"></i>
+                    <i class="fa fa-github" data-x="1" data-y="4" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
