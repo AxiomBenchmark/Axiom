@@ -1,6 +1,7 @@
 const http = require('http');
 const TestLibrary = require('../TestProfiles.json');
 const ResultDbAgent = require('../data_access/ResultDbAgent');
+const CustomUserAgentRules = require('./UserAgentCustomRules');
 
 const DECIMAL_PLACES = 7
 
@@ -55,7 +56,8 @@ class BenchmarkAgent {
             res.on('end', () => {
               try {
                 // once user agent api is done, save benchmark
-                const data = JSON.parse(rawData).data;
+                var data = JSON.parse(rawData).data;
+                data = CustomUserAgentRules(data, userAgent);
                 ResultDbAgent.newBenchmark(data.os_name, data.os_version, data.browser_name,
                     data.browser_version, data.ua_type, data.engine_name, data.engine_version, 
                     (id) => {

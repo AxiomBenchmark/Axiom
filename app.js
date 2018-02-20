@@ -7,23 +7,22 @@ let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-let redirectToHTTPS = require('express-http-to-https').redirectToHTTPS
+let redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 
 // create main express app
 let app = express();
 
 // view engine setup
 app.set('views', './views');
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 app.use(favicon('./public/favicon.png'));
 app.use(logger('dev'));
-app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/]))
+app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/]));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('./public'));
-app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/]))
 
 // create benchmark server and bind to /benchmark
 var http = require('http').Server(app);
@@ -66,8 +65,8 @@ app.get('*',function(req,res,next){
   if(req.headers['x-forwarded-proto']!='https')
     res.redirect('https://axiom-benchmark.herokuapp.com'+req.url)
   else
-    next()
-})
+    next();
+});
 
 // start server
 var port = process.env.PORT || 3000;
