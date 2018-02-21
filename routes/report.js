@@ -7,16 +7,15 @@ var report_routes = function(http) {
   //page to configure tests
   router.get('/', function(req, res) {
         ReportingAgent(req.query, function(err, report) {
+          report = {"report" : JSON.stringify(report)};
 
           console.log('\n\n\nerror:\n' + err);
           console.log('\n\n\report:\n' + report);
 
-          if (err)
-          {
+          if (err) {
             res.render('error', {"error" : err});
           }
-          else
-          {
+          else {
             console.log(report);
             res.render('benchmark/report', report);
           }

@@ -16,12 +16,11 @@ if (!String.prototype.format) {
   };
 }
 
-const averageTestResultSQL = 
-  "SELECT bftr.description, {0}(bftr.floatresult) \
+const averageResultsSQL = 
+  "SELECT bf.frameworkname, bft.description as testdesc, bftr.description, AVG(bftr.floatresult), stddev_pop(bftr.floatresult) as stddev \
   FROM benchmarkframeworks bf, benchmarkframeworktests bft, benchmarkframeworktestresults bftr \
-  WHERE bf.frameworkid = bft.frameworkid AND  bft.testid = bftr.testid AND bf.frameworkname = $1 \
-    AND bft.description = $2 \
-  GROUP BY bftr.description;"
+  WHERE bf.frameworkid = bft.frameworkid AND bft.testid = bftr.testid \
+  GROUP BY bf.frameworkname, bft.description, bftr.description;"
 
 const benchmarkResultSQL =  
   "SELECT timestamp, iscomplete, operatingsystem, operatingsystemversion, browser, browserversion, \
@@ -39,22 +38,38 @@ Uses a connection pool to handle high volume.
 class ReportingDbAgent {
 
   /*
-  Get an aggregation of a certain test's results across all platforms. Requires the framework id in 
-  question, test in question, MIN/AVG/MAX/COUNT requested, and the callback(results) function.
+  Get the average benchmark results for all frameworks and tests.
+  Reports the mean and standard deviation.
   */
-  getTestMIN_AVG_MAX_COUNT(framework, test, func, callback) {
-    var queryString = averageTestResultSQL.format(func.toUpperCase());
-    const values = [framework, test];
-    pool.query(queryString, values, function (err, res) {
+  getAverageBenchmark(callback) {
+    pool.query(averageResultsSQL, function(err, res) {
       //if sql error
       if (err) {
         callback(err, null);
         return;
       }
 
+      // build the json result
       var report = {};
+      report.id = "statistics";
+      report.frameworks = {};
       res.rows.forEach(function(element) {
-        report[element.description] = element[func.toLowerCase()];
+        // if statements are required to place empty objects to populate.
+        // hideous, but works for now.
+        if (!report.frameworks[element.frameworkname]) {
+          report.frameworks[element.frameworkname] = {};
+        }
+        if (!report.frameworks[element.frameworkname]["results"]) {
+          report.frameworks[element.frameworkname]["results"] = {};
+        }
+        if (!report.frameworks[element.frameworkname]["results"][element.testdesc]) {
+          report.frameworks[element.frameworkname]["results"][element.testdesc] = {};
+        }
+        report.frameworks[element.frameworkname]["results"][element.testdesc][element.description] = {}
+        report.frameworks[element.frameworkname]["results"][element.testdesc][element.description]
+          ["avg"] = element.avg;
+          report.frameworks[element.frameworkname]["results"][element.testdesc][element.description]
+          ["stddev"] = element.stddev;
       });
       callback(null, report);
     });
