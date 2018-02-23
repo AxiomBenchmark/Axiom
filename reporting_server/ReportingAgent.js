@@ -2,14 +2,16 @@ const ResultDbAgent = require('../data_access/ReportingDbAgent');
 const IdValidator = require('../data_access/BenchmarkIdGenerator').validate;
 
 const ReportingAgent = function(query, callback) {
+    var length = Object.keys(query).length
+
     // query needs to be present
-    if (query.length === 0) {
+    if (length === 0) {
         callback('no query specified.', null);
         return;
     }
 
     // validate query length
-    if (query.length > 2 || query.length === 0) {
+    if (length > 2) {
         callback('invalid number of benchmarks specified.', null);
         return;
     }
@@ -21,6 +23,12 @@ const ReportingAgent = function(query, callback) {
     }
 
     var report = {};
+
+    if (!query.benchmark)
+    {
+        callback('No benchmark specified.')
+        return;
+    }
 
     if (!IdValidator(query.benchmark)) {
         callback(query.benchmark + " is not a valid ID.");
