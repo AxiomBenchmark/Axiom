@@ -4,10 +4,19 @@ var report2 = reports.benchmark2
 var stats = reports.statistics
 
 var compareTwo = reports.benchmark2 != undefined
+
+// LUTs
+var os = {"macOS": "apple", "Windows": "windows", "Linux": "linux", "Android": "android"}
+var hw = {"Desktop": "desktop", "Mobile": "mobile"}
+var browser = {"Chrome": "chrome", "Opera": "opera", "Safari": "safari", "Firefox": "firefox"}
+
 console.log(compareTwo)
 console.log(reports)
+
 $(document).ready(function(){
     addButtons(report)
+    computeIcons()
+
     // load first available framework
     let fw = Object.keys(report.frameworks)
     fwClick(fw[0])
@@ -43,8 +52,7 @@ function getFrameworkData(json, framework) {
 
 function fwClick(e) {
     setChartData(e)    
-    computeIcons(e)
-
+    
     // change button background colors
     let btns = document.getElementsByClassName("btn")
 
@@ -81,8 +89,12 @@ function setChartData(e) {
     }
 }
 
-function computeIcons(fw) {
-    console.log(fw)
+function computeIcons() {
+    $("#os").attr('class', "fa fa-" + os[report.operatingsystem] + " fa-3x");
+    $("#hw").attr('class', "fa fa-" + hw[report.hardwaretype] + " fa-3x");
+    $("#browser").attr('class', "fa fa-" + browser[report.browser] + " fa-3x");
+    let date = new Date(report.timestamp)
+    $("#ts").text("Timestamp: " + date)
 }
 
 function displayBenchmark(b) {
