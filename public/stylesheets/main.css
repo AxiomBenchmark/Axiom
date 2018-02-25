@@ -1,5 +1,5 @@
 body {
-	background-color: #29292e !important;
+	background: linear-gradient(#e5ebf2, #ebeef5);
 	font-family: 'Roboto', sans-serif;
 	padding-top: 0px;
 	padding-bottom: 0px;
@@ -32,16 +32,27 @@ h2{
 }
 .sidebar
 {
-	background-color: #364554;
+	background: linear-gradient(#253042, black);
 	height:100vh;
-	width: 16vw;
-	z-index:1030;
+	width: 12vw;
+	/* z-index:1030; */
 	padding: 0px;
 	margin-left: 0px;
-	margin-right: 10px;
-    -webkit-box-shadow: 2px 4px 15px 0px black;
+    /* -webkit-box-shadow: 2px 4px 15px 0px black;
     -moz-box-shadow: 2px 4px 15px 0px black;
-         box-shadow: 2px 4px 15px 0px black;
+         box-shadow: 2px 4px 15px 0px black; */
+}
+.banner {
+	background: linear-gradient(to right, #253042, black);
+	padding: 20px;
+	color: white;
+	margin-top:10px;
+	vertical-align: middle;
+}
+.tile {
+	background-color:white;
+	padding:30px;
+	margin:10px;
 }
 #nav a
 {
@@ -49,11 +60,16 @@ h2{
 	font-size: 40px;
 	font-weight: bold;
 }
-canvas
+#myChart
 {
-	max-width: 760px;
-    max-height: 760px;
-    margin-top:5vh;
+	max-width: 1000px;
+    max-height: 700px;
+    /* margin-top:2vh; */
+}
+#percentileChart, #sdChart {
+	max-width:200px;
+	max-height:200px;
+	display:inline !important;
 }
 .btn-group{
 	margin-top: 5vh;
@@ -62,20 +78,34 @@ canvas
 .btn:hover{
 	background:#253042;
 }
-.btn:focus{ 
+/* .btn:focus{ 
 	background:#253042;
 	box-shadow:none;
-}
-.btn
-{
+} */
+.btn {
 	padding:20px;
 	padding-left:40px;
 	padding-right:40px;
-	background-color: #364554;
+	background-color: inherit;
 	color: white;
 	font-size: 20px;
 	width: 100%;
 	border: none;
+}
+.togglebtn {
+	margin-top:10px;
+	margin-left:10px;
+	padding:10px;
+	padding-left:10px;
+	padding-right:10px;
+	background: linear-gradient(#253042, black);
+	color: white;
+	font-size: 15px;
+	width: 40%;
+	border: none;
+}
+.togglebtn:selected {
+	background:red;
 }
 th, label
 {
@@ -91,6 +121,14 @@ table, td, th
 }
 th{
 	color:#767777;
+}
+.nav-item {
+	margin-right:20px;
+}
+.banner-text {
+	margin-right:10px;
+	/* text-align:left; */
+	vertical-align:50%;
 }
 canvas{
     -webkit-animation: fadein 1.5s; /* Safari, Chrome and Opera > 12.1 */
