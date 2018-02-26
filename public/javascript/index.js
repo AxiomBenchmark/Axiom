@@ -8,9 +8,8 @@ var compareTwo = reports.benchmark2 != undefined
 // LUTs
 var os = {"macOS": "apple", "Windows": "windows", "Linux": "linux", "Android": "android"}
 var hw = {"Desktop": "desktop", "Mobile": "mobile"}
-var browser = {"Chrome": "chrome", "Opera": "opera", "Safari": "safari", "Firefox": "firefox"}
+var browser = {"Chrome": "chrome", "Chrome Mobile": "chrome", "Opera": "opera", "Safari": "safari", "Firefox": "firefox"}
 
-console.log(compareTwo)
 console.log(reports)
 
 $(document).ready(function(){
@@ -26,24 +25,22 @@ $(document).ready(function(){
         myChart.data.datasets[1].label = "Benchmark " + report2.id
     } else {
         myChart.data.datasets[1].label = "Average"
+        sdChart.data.datasets.splice(1, 1)
     }
-
+    sdChart.update()
     myChart.update()
 })
 
 function getFrameworkData(json, framework) {
-    let data = []
+    let data = Object()
+    if(json == null) return {}
     let keys = Object.keys(json.results)
 
     keys.forEach(function(e, i) {
         let results = Object.keys(json.results[e])
         
         results.forEach(function(n, j) {
-            let obj = {
-                "name": n,
-                "value": json.results[e][n]
-            }
-            data.push(obj)
+            data[n] = json.results[e][n]
         })
     })
 
@@ -52,7 +49,8 @@ function getFrameworkData(json, framework) {
 
 function fwClick(e) {
     setChartData(e)    
-    
+    setStdDevChart(e)
+
     // change button background colors
     let btns = document.getElementsByClassName("btn")
 
@@ -60,6 +58,7 @@ function fwClick(e) {
         if(btns[i].value === e) {
             btns[i].style.backgroundColor = '#253042'
             btns[i].style.color = '#ff5b54'
+            // TODO: mouseover color change
             btns[i].onmouseover
             // btns[i].style. 
         } else {
@@ -70,23 +69,50 @@ function fwClick(e) {
 }
 
 function setChartData(e) {
-    if(report.frameworks[String(e)]) {
-        let data = getFrameworkData(report.frameworks[String(e)], String(e))
-        myChart.data.labels = data.map(function(d) {return d.name})
-        myChart.data.datasets[0].data = data.map(function(d) {return d.value})
+    let data = getFrameworkData(report.frameworks[String(e)], String(e))
+    let keys = Object.keys(data)
+    myChart.data.datasets[0].data = Object.values(data)
 
-        if(report2 != undefined) {
-            let data2 = getFrameworkData(report2.frameworks[String(e)], String(e))
-            myChart.data.labels = data2.map(function(d) {return d.name})
-            myChart.data.datasets[1].data = data2.map(function(d) {return d.value})
-            myChart.data.datasets[1].hidden = false
-        }
-        myChart.options.title.text = e
-        myChart.update()
+    if(compareTwo) {
+        let data2 = getFrameworkData(report2.frameworks[String(e)], String(e))
+        myChart.data.datasets[1].data = keys.map(function(label) { return data2[label] })
+    } else {
+        let data2 = getFrameworkData(stats.frameworks[String(e)], String(e))
+        myChart.data.datasets[1].data = keys.map(function(label) { return data2[label].avg })
     }
-    else {
-        console.log("data not available")
+
+    myChart.options.title.text = e
+    myChart.data.labels = keys
+    myChart.update()
+}
+
+function setStdDevChart(e) {
+    var data = getFrameworkData(report.frameworks[String(e)], String(e))
+    var stat = getFrameworkData(stats.frameworks[String(e)], String(e))
+    var keys = Object.keys(data)
+    var zScores = computeZScores(keys, data, stat);
+
+    sdChart.data.labels = keys
+    sdChart.data.datasets[0].data = zScores
+
+    if(compareTwo) {
+        data = getFrameworkData(report2.frameworks[String(e)], String(e))
+        zScores = computeZScores(keys, data, stat)
+        sdChart.data.datasets[1].data = zScores
     }
+
+    sdChart.update()
+}
+
+function computeZScores(keys, data, stat) {
+    var zScores = keys.map(function(label) {
+        let mean = stat[label].avg
+        let sd = stat[label].stddev
+        let val = data[label]
+        return (val - mean)/sd
+    })
+
+    return zScores
 }
 
 function computeIcons() {

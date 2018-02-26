@@ -89,7 +89,7 @@ var myChart = new Chart(ctx, {
 
 var pctx = document.getElementById("percentileChart").getContext('2d');
 
-pdata = {
+var pdata = {
     datasets: [{
         data: [percentile, 100-percentile],
         backgroundColor: [
@@ -114,32 +114,41 @@ var myDoughnutChart = new Chart(pctx, {
 
 var sdctx = document.getElementById("sdChart").getContext('2d')
 var sdData = {
+    labels: ["Mount", "Render", "Update", "Destroy", "Create", "Swap"],
     datasets: [{
-        data: [{x:sd, y:1}],
-        backgroundColor: [
-            'rgba(255, 74, 75, 1)'
-        ],
-        // borderWidth: 1,
-        // borderColor: 'rgba(220, 60, 100, 1)',
+        label: "Benchmark 1",
+        backgroundColor: 'rgba(255, 74, 75, .5)',
+        pointBackgroundColor: 'rgba(255, 74, 75, 1)',
+        // hoverPointBackgroundColor: "#fff",
+        // pointHighlightStroke: "rgba(151,187,205,1)",
+        data: [1,2,3,4,5],
+    },
+    {
+        label: "Benchmark 2",
+        backgroundColor: 'rgba(27, 175, 255, .5)',
+        pointBackgroundColor: 'rgba(27, 175, 255, 1)',
+        // hoverPointBackgroundColor: "#fff",
+        // pointHighlightStroke: "rgba(151,187,205,1)",
+        data: [1,2,3,4,5],
     }]
 }
 var sdChart = new Chart(sdctx, {
-    type: 'scatter',
+    type: 'radar',
     data: sdData,
     options: {
         // title: {
         //     display: true,
         //     text: 'Standard Deviation'
         // },
-        scales: {
-            xAxes: [{
-                ticks: {
-                    max: 3,
-                    min: -3,
-                    beginAtZero:true
-                }
-            }]
-        },
+        // scales: {
+        //     xAxes: [{
+        //         ticks: {
+        //             max: 3,
+        //             min: -3,
+        //             beginAtZero:true
+        //         }
+        //     }]
+        // },
         maintainAspectRatio: false,
         responsive:true
     }
