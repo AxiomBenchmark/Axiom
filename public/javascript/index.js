@@ -8,7 +8,7 @@ var compareTwo = reports.benchmark2 != undefined
 // LUTs
 var os = {"macOS": "apple", "Windows": "windows", "Linux": "linux", "Android": "android"}
 var hw = {"Desktop": "desktop", "Mobile": "mobile"}
-var browser = {"Chrome": "chrome", "Chrome Mobile": "chrome", "Opera": "opera", "Safari": "safari", "Firefox": "firefox"}
+var browser = {"Chrome": "chrome", "Chrome Mobile": "chrome", "Opera": "opera", "Safari": "safari", "Firefox": "firefox", "Microsoft Edge":"edge"}
 
 console.log(reports)
 
