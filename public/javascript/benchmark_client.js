@@ -89,14 +89,30 @@ socket.on('framework_load', function(params) {
 socket.on('test_request', function(params) {
     console.log(params);
     log('test_request: ' + params.name + ' requested.');
-
+    var watchdog = {
+        isRunning: false,
+        start: function(timeout, callback) {
+            watchdog.isRunning = true;
+    
+            var onElapsed = function() {
+                if (watchdog.isRunning)
+                {
+                    watchdog.isRunning = false;
+                    callback();
+                }
+            }
+    
+            setTimeout(onElapsed, timeout);
+        }
+    }
     var callback = function(result) {
+        watchdog.isRunning = false;
         log(params.name + ' done. Result: ' + JSON.stringify(result));
         // result.function = params.function;
         //result.name = params.name;
         socket.emit('test_result', result);
     }
-
+    watchdog.start(30000, console.log("TEST TOOK TOO LONG: Timeout 30s"));
     window.UUT.runTest(params, callback);
 });
 
