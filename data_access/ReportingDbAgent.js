@@ -31,6 +31,17 @@ const benchmarkResultSQL =
   WHERE b.benchmarkid = bf.benchmarkid AND bf.frameworkid = bft.frameworkid \
     AND bft.testid = bftr.testid AND b.benchmarkid = $1;"
 
+const bencharkFrameworkPercentileSQL = 
+  "SELECT * \
+  FROM ( \
+    SELECT b.benchmarkid, bf.frameworkname, \
+      round((RANK() OVER (ORDER BY SUM(bftr.floatresult) ASC NULLS LAST)) / CAST (COUNT(*) OVER () AS DEC), 2) as percentile \
+    FROM benchmarks b, benchmarkframeworks bf, benchmarkframeworktests bft, benchmarkframeworktestresults bftr \
+    WHERE b.benchmarkid = bf.benchmarkid AND bf.frameworkid = bft.frameworkid AND bft.testid = bftr.testid \
+    GROUP BY b.benchmarkid, bf.frameworkname \
+    ORDER BY SUM(bftr.floatresult)) as percentiles \
+  WHERE benchmarkid = $1;"
+
 /*
 Allows access to database to provide reporting access.
 Uses a connection pool to handle high volume.
@@ -122,7 +133,21 @@ class ReportingDbAgent {
         report.frameworks[element.frameworkname]["version"] = element.frameworkversion;
       });
 
-      callback(null, report);
+      // get percentile calculation
+      pool.query(bencharkFrameworkPercentileSQL, [id], function (err, res) {
+        // if sql error
+        if (err) {
+          console.log(err);
+          callback('Database Problem. Please Try Again.',  null);
+          return;
+        }
+
+        res.rows.forEach(function(row) {
+          report.frameworks[row.frameworkname]["percentile"] = row.percentile;
+        });
+
+        callback(null, report);
+      });
     });
   }
 }
