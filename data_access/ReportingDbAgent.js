@@ -17,15 +17,16 @@ if (!String.prototype.format) {
 }
 
 const averageResultsSQL = 
-  "SELECT bf.frameworkname, bft.description as testdesc, bftr.description, AVG(bftr.floatresult), stddev_pop(bftr.floatresult) as stddev \
+  "SELECT bf.frameworkname, bft.description as testdesc, bftr.name, AVG(bftr.floatresult), \
+    stddev_pop(bftr.floatresult) as stddev \
   FROM benchmarkframeworks bf, benchmarkframeworktests bft, benchmarkframeworktestresults bftr \
   WHERE bf.frameworkid = bft.frameworkid AND bft.testid = bftr.testid \
-  GROUP BY bf.frameworkname, bft.description, bftr.description;"
+  GROUP BY bf.frameworkname, bft.description, bftr.name;"
 
 const benchmarkResultSQL =  
   "SELECT timestamp, iscomplete, operatingsystem, operatingsystemversion, browser, browserversion, \
-    hardwaretype, frameworkname, frameworkversion, bftr.description, floatresult, \
-    bft.description as testdesc \
+    hardwaretype, frameworkname, frameworkversion, bftr.name as resultname, \
+    bftr.description as resultdesc, floatresult, bft.description as testdesc \
   FROM benchmarks b, benchmarkframeworks bf, benchmarkframeworktests bft, \
     benchmarkframeworktestresults bftr \
   WHERE b.benchmarkid = bf.benchmarkid AND bf.frameworkid = bft.frameworkid \
@@ -76,10 +77,10 @@ class ReportingDbAgent {
         if (!report.frameworks[element.frameworkname]["results"][element.testdesc]) {
           report.frameworks[element.frameworkname]["results"][element.testdesc] = {};
         }
-        report.frameworks[element.frameworkname]["results"][element.testdesc][element.description] = {}
-        report.frameworks[element.frameworkname]["results"][element.testdesc][element.description]
+        report.frameworks[element.frameworkname]["results"][element.testdesc][element.name] = {}
+        report.frameworks[element.frameworkname]["results"][element.testdesc][element.name]
           ["avg"] = element.avg;
-          report.frameworks[element.frameworkname]["results"][element.testdesc][element.description]
+          report.frameworks[element.frameworkname]["results"][element.testdesc][element.name]
           ["stddev"] = element.stddev;
       });
       callback(null, report);
@@ -128,8 +129,12 @@ class ReportingDbAgent {
         if (!report.frameworks[element.frameworkname]["results"][element.testdesc]) {
           report.frameworks[element.frameworkname]["results"][element.testdesc] = {};
         }
-        report.frameworks[element.frameworkname]["results"][element.testdesc][element.description] 
+        report.frameworks[element.frameworkname]["results"][element.testdesc][element.resultname] 
+          = {};
+        report.frameworks[element.frameworkname]["results"][element.testdesc][element.resultname]["result"]
           = element.floatresult;
+          report.frameworks[element.frameworkname]["results"][element.testdesc][element.resultname]["desc"]
+          = element.resultdesc;
         report.frameworks[element.frameworkname]["version"] = element.frameworkversion;
       });
 
