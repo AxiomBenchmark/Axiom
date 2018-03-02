@@ -78,7 +78,7 @@ var testA = function(callback) {
   }
 
   results = {};
-  results.test = "Vue Lifecycle Test A"
+  results.test = "Lifecycle Test A"
   results.render = timing.rend/1000
   results.destroy = timing.dest/1000
   results.mount = timing.mount/1000
@@ -87,38 +87,43 @@ var testA = function(callback) {
 
 // updating test
 var testB = function(callback) {
-  t0 = t1 = t2 = t3 = 0
+  t2 = t3 = 0
   results = {};
-  results.test = "Vue Lifecycle Test B"
+  results.test = "Lifecycle Test B"
   let v = vm();
-  t0 = performance.now()
-  Vue.set(v, 'val', 10)
-  v.$forceUpdate();
-
-  // ONLY DOES ONE UPDATE, CHANGE TO 1000
-  Vue.nextTick().then(function() {
-    timing.update = t3 - t0
-    results.update = timing.update
-    callback(results)
-  })
+  for (let i = 0; i < 1000; i++) {
+    t2 = performance.now()
+    v.children.push(new Child());
+    v.$forceUpdate();
+    Vue.nextTick().then(function() {
+      t3 = performance.now()
+      timing.update += t3 - t2
+      if (i == 999) {
+        results.update = timing.update / 1000
+        callback(results)
+      }
+    })
+  }
 }
 
 var testC = function(callback) {
   t0 = t1 = 0
   results = {};
-  results.test = "Vue Child Lifecycle Test"
+  results.test = "Child Lifecycle Test"
   let v = vm();
   for (let i = 0; i < 1000; i++){
     t0 = performance.now()
     v.children.push(new Child());
     v.$forceUpdate();
-    Vue.nextTick().then(function(){
+    Vue.nextTick().then(function() {
       t1 = performance.now()
       timing.createChild += t1 - t0
+      if (i == 999) {
+        results.createChild = timing.createChild / 1000
+        callback(results)
+      }
     })
   }
-  results.createChild = timing.createChild / 1000
-  callback(results)
 }
 
 window.UUT.testA = testA;

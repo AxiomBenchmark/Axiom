@@ -18,8 +18,8 @@ const newTestSQL =
    VALUES ($1, $2) RETURNING testid;"
 
 const newResultSQL = 
-  "INSERT INTO benchmarkframeworktestresults (testid, description, floatresult) \
-   VALUES ($1, $2, $3);"
+  "INSERT INTO benchmarkframeworktestresults (testid, name, description, floatresult) \
+   VALUES ($1, $2, $3, $4);"
 
 const completeBenchmarkSQL =
   "UPDATE benchmarks SET iscomplete = TRUE WHERE benchmarkid = $1 ;"
@@ -100,8 +100,8 @@ class ResultDbAgent {
   description of what the test tested, and the actual result of the test. Currently only numeric
   results are accepted.
   */
-  newResult(testid, description, result) {
-    const values = [testid, description, result];
+  newResult(testid, name, description, result) {
+    const values = [testid, name, description, result];
     pool.query(newResultSQL, values);
   }
 

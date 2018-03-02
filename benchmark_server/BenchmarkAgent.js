@@ -114,7 +114,7 @@ class BenchmarkAgent {
         ResultDbAgent.newTest(this.frameworkid, result.test, (testid) => {
             delete result.test;
             for (var i in result) {
-                ResultDbAgent.newResult(testid, i, roundFloat(result[i], 7));
+                ResultDbAgent.newResult(testid, i, i.toUpperCase(), roundFloat(result[i], 7));
             }
             this.testsComplete++;
             this.sendProgress();

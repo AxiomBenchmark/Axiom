@@ -7,13 +7,22 @@
         "tests" : [
             {
                 "name" : "Lifecycle Test",
-                "function" : "lifecycleTest"
+                "function" : "lifecycleTest",
+                "descriptions" : {
+                    "render" : "RRRRrender does blah",
+                    "mount" : "RRRmount stuff",
+                    "destroy" : "RRRRDESOTRY!!"
+                }
             },
             {
                 "name" : "Rows Test",
-                "function" : "rowsTest"
+                "function" : "rowsTest",
+                "descriptions" : {
+                    "swap" : "TTTTTTswaparapapapapa",
+                    "update" : "TTTTTTupdate junks",
+                    "create" : "TTTTTTcreate some stuff"
+                }
             }
-
         ]
     },
     {
@@ -25,11 +34,32 @@
         "tests" : [
             {
                 "name" : "Lifecycle Test A",
-                "function" : "testA"
+                "function" : "testA",
+                "descriptions" : {
+                    "render" : "VVVVVVrender does blah",
+                    "mount" : "mount stuff",
+                    "destroy" : "DESOTRY!!"
+                }
             },
             {
                 "name" : "Lifecycle Test B",
-                "function" : "testB"
+                "function" : "testB",
+                "descriptions" : {
+                    "mount" : "MOUNT",
+                    "destroy" : "ddddstroy",
+                    "render" : "render it up",
+                    "update" : "YAY UPDATE"
+                }
+            },
+            {
+                "name" : "Child Lifecycle Test",
+                "function" : "testC",
+                "descriptions" : {
+                    "mount" : "MOUNT",
+                    "destroy" : "ddddstroy",
+                    "render" : "render it up",
+                    "update" : "YAY UPDATE"
+                }
             }
         ]
     }
