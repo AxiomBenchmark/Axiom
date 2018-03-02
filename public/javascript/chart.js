@@ -1,5 +1,7 @@
 var ctx = document.getElementById("myChart").getContext('2d');
 Chart.defaults.global.defaultFontColor = "#686a8b";
+Chart.defaults.global.defaultFontSize = 12; 
+Chart.defaults.global.defaultFontFamily = "Roboto";
 
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -68,7 +70,9 @@ var myChart = new Chart(ctx, {
         title: {
             display: true,
             text: 'TEST',
-            size: '20px'
+            fontSize: 23,
+            fontStyle: 'normal',
+            // fontFamily: "'Roboto', 'sans-serif'"
         },
         tooltips: {
             mode: 'index',
@@ -79,7 +83,13 @@ var myChart = new Chart(ctx, {
                 ticks: {
                     suggestedMax: 1,
                     beginAtZero:true
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: "Time (ms)",
+                    fontSize: 13
                 }
+                
             }]
         },
         responsive: true,
@@ -91,24 +101,32 @@ var pctx = document.getElementById("percentileChart").getContext('2d');
 
 var pdata = {
     datasets: [{
-        data: [percentile, 100-percentile],
+        data: [0, 0],
         backgroundColor: [
-            'rgba(255, 74, 75, 1)'
+            'rgba(255, 74, 75, .5)',
+            'rgba(27, 175, 255, .5)'
         ],
-        // borderWidth: 1,
-        // borderColor: 'rgba(220, 60, 100, 1)',
+        borderWidth: 1,
+        borderColor: [
+            'rgba(220, 60, 100, 1)',
+            'rgba(27, 175, 255, 1)'
+        ],
     }],
+    labels: ["bleh", "moo"],
 };
-var myDoughnutChart = new Chart(pctx, {
-    type: 'doughnut',
+
+var percentileChart = new Chart(pctx, {
+    type: 'polarArea',
     data: pdata,
     options: {
-        // title: {
-        //     display: true,
-        //     // text: 'Percentile'
-        // },
-        responsive:true,
+        responsive: true,
         maintainAspectRatio: false,
+        scale: {
+            ticks: {
+                beginAtZero:true,
+                max: 100
+            }
+        }
     }
 });
 
@@ -119,17 +137,23 @@ var sdData = {
         label: "Benchmark 1",
         backgroundColor: 'rgba(255, 74, 75, .5)',
         pointBackgroundColor: 'rgba(255, 74, 75, 1)',
+        borderColor: 'rgba(220, 60, 100, 1)',
+        borderWidth:1,
         // hoverPointBackgroundColor: "#fff",
         // pointHighlightStroke: "rgba(151,187,205,1)",
         data: [1,2,3,4,5],
+        hidden: false
     },
     {
         label: "Benchmark 2",
         backgroundColor: 'rgba(27, 175, 255, .5)',
         pointBackgroundColor: 'rgba(27, 175, 255, 1)',
+        borderColor: 'rgba(27, 175, 255, 1)',
+        borderWidth:1,
         // hoverPointBackgroundColor: "#fff",
         // pointHighlightStroke: "rgba(151,187,205,1)",
         data: [1,2,3,4,5],
+        hidden: false
     }]
 }
 var sdChart = new Chart(sdctx, {

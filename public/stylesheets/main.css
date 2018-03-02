@@ -30,6 +30,25 @@ h2{
 	padding-left: 0px;
 	padding-right: 0px;
 }
+.reporticon {
+	color: rgba(255, 74, 75, 1);
+}
+.report2icon {
+	color: rgba(27, 175, 255, 1);
+	vertical-align:25%;
+}
+.report1icon {
+	color: rgba(255, 74, 75, 1);
+	vertical-align:25%;
+}
+#score1 {
+	color: rgba(255, 74, 75, 1);
+	font-size: 40px;
+}
+#score2 {
+	color: rgba(27, 175, 255, 1);
+	font-size: 40px;
+}
 .sidebar
 {
 	background: linear-gradient(#253042, black);
@@ -93,7 +112,7 @@ h2{
 	border: none;
 }
 .togglebtn {
-	margin-top:10px;
+	/* margin-top:10px; */
 	margin-left:10px;
 	padding:10px;
 	padding-left:10px;
