@@ -32,7 +32,7 @@
             <div class="row">
                 <div class='col-2 sidebar'>
                     <div id="method">
-                        <h1> Axiom </h1>
+                        <h1 style="font-size:3vw;"> Axiom </h1>
                         <div class="btn-group"></div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                         </nav>
                     </div>
                     <div class="col-11" >
-                        <div class="banner" style="height:10vh;display:flex;align-items:center;">
+                        <div class="banner" style="height:12vh;display:flex;align-items:center;">
                             <div id="os-div" style="width:20%;text-align:center;">
                                 <span class="banner-text" >Operating System</span>
                                 <i id="os" class="fa fa-3x" aria-hidden="true"></i>
@@ -62,9 +62,9 @@
                                 <span class="banner-text">Browser</span>
                                 <i id="browser" class="fa fa-3x" aria-hidden="true"></i>
                             </div>
-                            <div id="ts" style="width:20%;text-align:center;">Time: 8:45 pm 08/21/18 </div>
+                            <div id="ts" style="width:20%;text-align:center;font-size:1vw;">Time: 8:45 pm 08/21/18 </div>
                             <div id="score" style="width:20%;text-align:center;"> 
-                                <div style="width:100%;font-size:20px;"> Score </div>
+                                <div style="width:100%;font-size:1.5vw;margin-top:10px;"> Score </div>
                                 <span id="score1"></span>
                                 <span id="score2"></span>
                             </div>
@@ -76,16 +76,16 @@
                         </div>
                         <div class="col-3" style="padding:0px">
                             <div class='tile' style="text-align:center;" > 
-                                <span style="color:#686a8b;font-size:25px;"> Standard Deviation </span>
+                                <span style="color:#686a8b;font-size:1.5vw;"> Standard Deviation </span>
                                 <!-- <h1 id="sd"> </h1> -->
                                 <canvas id="sdChart" height="400" width="400"></canvas>
                             </div>
                             <div style="text-align:center;" class='tile'>
-                                <span style="color:#686a8b;font-size:25px;"> Percentile </span>
+                                <span style="color:#686a8b;font-size:1.5vw;"> Percentile </span>
                                 <canvas id="percentileChart" height="400" width="400"></canvas>
                             </div>
                             <button onclick="displayBenchmark(value)" class="togglebtn" value="0"> Display Benchmark 1 </button>
-                            <button onclick="displayBenchmark(value)" class="togglebtn" value="1"> Display Benchmark 2</button>
+                            <button onclick="displayBenchmark(value)" class="togglebtn" style="display:none;" value="1"> Display Benchmark 2</button>
                         </div>
                     </div>
                 </div>

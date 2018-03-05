@@ -32,6 +32,7 @@ h2{
 }
 .reporticon {
 	color: rgba(255, 74, 75, 1);
+	font-size: 2vw;
 }
 .report2icon {
 	color: rgba(27, 175, 255, 1);
@@ -43,11 +44,11 @@ h2{
 }
 #score1 {
 	color: rgba(255, 74, 75, 1);
-	font-size: 40px;
+	font-size: 3vw;
 }
 #score2 {
 	color: rgba(27, 175, 255, 1);
-	font-size: 40px;
+	font-size: 3vw;
 }
 .sidebar
 {
@@ -81,14 +82,14 @@ h2{
 }
 #myChart
 {
-	max-width: 1000px;
-    max-height: 700px;
+	max-width: 60vw;
+    max-height: 70vh;
     /* margin-top:2vh; */
 }
 #percentileChart, #sdChart {
-	max-width:200px;
-	max-height:200px;
-	display:inline !important;
+	max-width:20vw;
+	max-height:20vh;
+	/* display:inline !important; */
 }
 .btn-group{
 	margin-top: 5vh;
@@ -102,25 +103,28 @@ h2{
 	box-shadow:none;
 } */
 .btn {
-	padding:20px;
+	/* padding:20px;
 	padding-left:40px;
-	padding-right:40px;
+	padding-right:40px; */
+	padding:1vw;
 	background-color: inherit;
 	color: white;
-	font-size: 20px;
-	width: 100%;
+	font-size: 1.5vw;
+	width: 17vw;
 	border: none;
 }
 .togglebtn {
 	/* margin-top:10px; */
 	margin-left:10px;
+	margin-bottom:10px;
 	padding:10px;
 	padding-left:10px;
 	padding-right:10px;
 	background: linear-gradient(#253042, black);
-	color: white;
-	font-size: 15px;
-	width: 40%;
+	color: #ff5b54;
+	font-size: 2vh;
+	width: 9vw;
+	height: 8vh;
 	border: none;
 }
 .togglebtn:selected {
@@ -147,6 +151,7 @@ th{
 .banner-text {
 	margin-right:10px;
 	/* text-align:left; */
+	font-size: 1vw;
 	vertical-align:50%;
 }
 canvas{

@@ -187,7 +187,8 @@ function displayBenchmark(b) {
     // hide std dev chart
     sdChart.data.datasets[b].hidden = !sdChart.data.datasets[b].hidden
 
-    document.getElementsByClassName("togglebtn")[b].style.backgroundColor = myChart.data.datasets[b].hidden ? '#364554' :'#9CABBA'
+    document.getElementsByClassName("togglebtn")[b].style.background = myChart.data.datasets[b].hidden ? '#253042' :'linear-gradient(#253042, black)'
+    document.getElementsByClassName("togglebtn")[b].style.color = myChart.data.datasets[b].hidden ? 'white' :'#ff5b54'
     percentileChart.update()
     sdChart.update()
     myChart.update()
@@ -203,5 +204,9 @@ function addButtons(report) {
 
         })
         $but.appendTo(".btn-group")
+    }
+
+    if(compareTwo) {
+        $(".togglebtn")[1].style.display = 'inline-block'
     }
 }
