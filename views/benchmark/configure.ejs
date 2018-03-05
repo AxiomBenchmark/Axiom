@@ -13,9 +13,9 @@
                 <form action="run">
                     <% var i;
                     for (i = 0; i < frameworks.length; i++) {%>
-                        <label data-x="0" data-y="<%=i%>" style="margin-bottom: 20px;"><input type="checkbox" name="<%=frameworks[i].id%>"/><span class="noselect">  <%=frameworks[i].name%></span></label><br>
+                        <label data-x="0" data-y="<%=i%>" style="margin-bottom: 20px;"><input type="checkbox" name="<%=frameworks[i].id%>"/><span class="noselect frameworkoption"><%=frameworks[i].name%></span></label><br>
                     <%}%>
-                    <input data-x="0" data-y="<%=i%>" type="submit" value="Submit">
+                    <input data-x="0" data-y="<%=i%>" class="rect-btn" type="submit" value="Submit">
                 </form>
             </div>
         </div>

@@ -115,7 +115,18 @@ span {
           -ms-user-select: none; /* Internet Explorer/Edge */
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
-  }
+}
+
+.frameworkoption {
+    font-family: 'Allan', sans-serif;
+    font-size: 2em;
+}
+
+input[type='checkbox'] {
+    width: 2em;
+    height: 2em;
+    margin: 5px;
+}
 
 #benchmarkSearch {
     background-color: #ff5d55;
