@@ -3,10 +3,10 @@ module.exports = [
     {
         "contains" : "Comcast",
         "set" : {
-            "ua_type" : "Comcast STB",
-            "os_name" : "ComcOSt",
+            "ua_type" : "Comcast STBSTB",
+            "os_name" : "Comcast",
             "os_version" : null,
-            "browser_name" : "Mosaic"
+            "browser_name" : "Comcast"
         }
     }
 ]
