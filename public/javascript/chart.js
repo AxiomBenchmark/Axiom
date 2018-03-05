@@ -1,6 +1,6 @@
 var ctx = document.getElementById("myChart").getContext('2d');
 Chart.defaults.global.defaultFontColor = "#686a8b";
-Chart.defaults.global.defaultFontSize = 12; 
+Chart.defaults.global.defaultFontSize = 18; 
 Chart.defaults.global.defaultFontFamily = "Roboto";
 
 var myChart = new Chart(ctx, {
@@ -87,7 +87,7 @@ var myChart = new Chart(ctx, {
                 scaleLabel: {
                     display: true,
                     labelString: "Time (ms)",
-                    fontSize: 13
+                    fontSize: 18
                 }
                 
             }]

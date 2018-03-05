@@ -47,7 +47,8 @@ function getFrameworkData(json, framework) {
         let results = Object.keys(json.results[e])
         
         results.forEach(function(n, j) {
-            data[n] = json.results[e][n]
+            if(json.results[e][n].result != 0)
+                data[n] = json.results[e][n]
         })
     })
 
