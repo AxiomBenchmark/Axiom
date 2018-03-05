@@ -188,7 +188,7 @@ function displayBenchmark(b) {
     sdChart.data.datasets[b].hidden = !sdChart.data.datasets[b].hidden
 
     document.getElementsByClassName("togglebtn")[b].style.background = myChart.data.datasets[b].hidden ? '#253042' :'linear-gradient(#253042, black)'
-    document.getElementsByClassName("togglebtn")[b].style.color = myChart.data.datasets[b].hidden ? 'white' :'#ff5b54'
+    document.getElementsByClassName("togglebtn")[b].style.color = myChart.data.datasets[b].hidden ? 'white' :'#FF5D55'
     percentileChart.update()
     sdChart.update()
     myChart.update()

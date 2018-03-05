@@ -44,17 +44,17 @@ h2{
 }
 #score1 {
 	color: rgba(255, 74, 75, 1);
-	font-size: 3vw;
+	font-size: 2.5vw;
 }
 #score2 {
 	color: rgba(27, 175, 255, 1);
-	font-size: 3vw;
+	font-size: 2.5vw;
 }
 .sidebar
 {
 	background: linear-gradient(#253042, black);
 	height:100vh;
-	width: 12vw;
+	/* width: 10vw; */
 	/* z-index:1030; */
 	padding: 0px;
 	margin-left: 0px;
@@ -71,7 +71,7 @@ h2{
 }
 .tile {
 	background-color:white;
-	padding:30px;
+	padding:20px;
 	margin:10px;
 }
 #nav a
@@ -83,12 +83,12 @@ h2{
 #myChart
 {
 	max-width: 60vw;
-    max-height: 70vh;
+    max-height: 75vh;
     /* margin-top:2vh; */
 }
 #percentileChart, #sdChart {
-	max-width:20vw;
-	max-height:20vh;
+	max-width:21vw;
+	max-height:25vh;
 	/* display:inline !important; */
 }
 .btn-group{
@@ -110,7 +110,7 @@ h2{
 	background-color: inherit;
 	color: white;
 	font-size: 1.5vw;
-	width: 17vw;
+	width: 100%;
 	border: none;
 }
 .togglebtn {
@@ -121,14 +121,11 @@ h2{
 	padding-left:10px;
 	padding-right:10px;
 	background: linear-gradient(#253042, black);
-	color: #ff5b54;
-	font-size: 2vh;
+	color: #FF5D55;
+	font-size: 1vw;
 	width: 9vw;
 	height: 8vh;
 	border: none;
-}
-.togglebtn:selected {
-	background:red;
 }
 th, label
 {
