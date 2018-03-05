@@ -200,7 +200,7 @@ function addButtons(report) {
     var keys = Object.keys(report.frameworks)
 
     for(var i = 0; i < keys.length; i++) {
-        var $but = $('<button onclick="fwClick(value)" value="' + keys[i] + '" class="btn" type="button">'+ keys[i] + ' </button>')
+        var $but = $('<button onclick="fwClick(value)" value="' + keys[i] + '" class="btn" data-x=\"0\" data-y=\"' + (i+1) +'\" type="button">'+ keys[i] + ' </button>')
         // add background color change on hover
         $but.hover(function() {
 
