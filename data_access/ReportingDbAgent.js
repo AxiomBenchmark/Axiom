@@ -36,7 +36,7 @@ const bencharkFrameworkPercentileSQL =
   "SELECT * \
   FROM ( \
     SELECT b.benchmarkid, bf.frameworkname, \
-      round((RANK() OVER (ORDER BY SUM(bftr.floatresult) ASC NULLS LAST)) / CAST (COUNT(*) OVER () AS DEC), 2) as percentile \
+      round(1 - (RANK() OVER (ORDER BY SUM(bftr.floatresult) ASC NULLS LAST)) / CAST (COUNT(*) OVER () AS DEC), 2) as percentile \
     FROM benchmarks b, benchmarkframeworks bf, benchmarkframeworktests bft, benchmarkframeworktestresults bftr \
     WHERE b.benchmarkid = bf.benchmarkid AND bf.frameworkid = bft.frameworkid AND bft.testid = bftr.testid \
     GROUP BY b.benchmarkid, bf.frameworkname, bft.description \
