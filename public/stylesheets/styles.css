@@ -3,7 +3,7 @@ html {
     position: relative;
 }
 body {
-    background-color: #364554;
+    background:linear-gradient(#253042, black);
     margin: 0px;
 }
 a:link {
