@@ -6,9 +6,9 @@ var selectedFramework = ""
 var compareTwo = reports.benchmark2 != undefined
 
 // LUTs
-var os = {"macOS": "apple", "Windows": "windows", "Linux": "linux", "Android": "android", "Comcast":"contao", "iOS":"apple"}
-var hw = {"Desktop": "desktop", "Mobile": "mobile", "STB":"hdd"}
-var browser = {"Chrome": "chrome", "Chrome Mobile": "chrome", "Opera": "opera", "Safari": "safari", "Firefox": "firefox", "Microsoft Edge":"edge", "Comcast":"contao",
+var os = {"macOS": "apple", "Windows": "windows", "Linux": "linux", "Android": "android", "Comcast":"copyright", "iOS":"apple"}
+var hw = {"Desktop": "desktop", "Mobile": "mobile", "STB": "hdd-o"}
+var browser = {"Chrome": "chrome", "Chrome Mobile": "chrome", "Opera": "opera", "Safari": "safari", "Firefox": "firefox", "Microsoft Edge":"edge", "Comcast": "copyright",
 "Safari Mobile": "safari", "Chrome Mobile iOS": "chrome"}
 
 console.log(reports)
