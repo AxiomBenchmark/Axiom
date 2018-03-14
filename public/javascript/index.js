@@ -174,7 +174,7 @@ function computeScores() {
             return acc + parseFloat(report2.frameworks[framework].percentile * 100)
         }, 0)
         scr /= Object.keys(report2.frameworks).length
-        document.getElementById("score2").innerHTML = scr
+        document.getElementById("score2").innerHTML = scr.toFixed(1);
     }
 }
 
