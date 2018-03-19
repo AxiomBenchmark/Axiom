@@ -3,8 +3,12 @@ Axiom is a tool designed to test the timing of JavaScript Frameworks across devi
 
 ## Getting Started
 ### Prerequisites
-+ Nodejs
++ Nodejs version 8.10+
 + npm package manager
++ 2.5 GB of free space
++ Postgres SQL server
++ An open port
+
 ### Installing
 Make sure you have downloaded a complete version of the repository.
 Axiom uses npm package manager. To install Axiom, just run the install script for npm:
@@ -14,10 +18,10 @@ npm install
 ## Deployment
 To run Axiom locally, make sure that all the npm packages are installed. Then run the following script:
 ```
-npm start
+npm run bs
 ```
 Then navigate to https://localhost:3000
-
+For more information about Deployment, see the Deployment Guide.
 ## Contributing
 Please be respectful of others. 
 Please follow the below guidelines. Pull requests and code that does not meet the guidelines will be rejected.  
