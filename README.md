@@ -21,7 +21,7 @@ To run Axiom locally, make sure that all the npm packages are installed. Then ru
 npm run bs
 ```
 Then navigate to https://localhost:3000
-For more information about Deployment, see the Deployment Guide.
+For more information see the [Deployment Guide](https://github.com/AxiomBenchmark/Axiom/wiki/Deployment-Guide)
 ## Contributing
 Please be respectful of others. 
 Please follow the below guidelines. Pull requests and code that does not meet the guidelines will be rejected.  
@@ -33,8 +33,7 @@ For issue tracking, we are using GitHub issues. Before posting a new bug, please
 All code must follow the [code quality guidelines](CODE_QUALITY_GUIDELINES.md)
 
 ### Creating a new test
-Please follow the template in 
-<!---[template.js](template.js)--->
+Please follow the [Test Development Guide](https://github.com/AxiomBenchmark/Axiom/wiki/Test-Development-Guidehttps://github.com/AxiomBenchmark/Axiom/wiki/Test-Development-Guide)
 
 ### Pull requests
 Make all pull requests to the develop branch of the repository. 
